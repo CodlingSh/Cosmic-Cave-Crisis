@@ -124,12 +124,12 @@ class Enemy {
       moving = false;
     }
 
-    void spawn(uint8_t newH, uint8_t newL) {
-      setX(140);
-      setY(random(newH, newL - height));
-      setHighest(newH);
-      setLowest(newL);
-      setActive(true);
+    void spawn(uint8_t newH, uint8_t newL, uint8_t newX) {
+      x = newX;
+      y = random(newH, newL - height);
+      highest = newH;
+      lowest = newL;
+      active = true;
       moving = false;
       dir = -1;
     }

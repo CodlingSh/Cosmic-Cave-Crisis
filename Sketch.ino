@@ -5,12 +5,14 @@
 #include "fuelGage.h"
 #include "enemy.h"
 #include "score.h"
+#include "fuelPad.h"
 
 Arduboy2 ab;
 Player player(&ab);
 Enemy enemies[13](&player);
+FuelPad fuelPads[13];
 FuelGage fuelGage;
-Level level(&ab, enemies);
+Level level(&ab, enemies, fuelPads);
 Score score;
 int8_t lives = 3;
 

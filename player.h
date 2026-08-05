@@ -112,7 +112,7 @@ class Player {
 
       // Movement
       if (ab->pressed(UP_BUTTON)) {
-        acc = -1;
+        acc = -4;
       }
       if (ab->notPressed(UP_BUTTON) && ab->notPressed(DOWN_BUTTON)) {
         acc = 0;
@@ -121,7 +121,7 @@ class Player {
       
       
       if (ab->pressed(DOWN_BUTTON)) {
-        acc = 1;
+        acc = 4;
       } 
 
       vel += acc;
@@ -132,6 +132,12 @@ class Player {
         subY += (maxVel * -1);
       } else {
         subY += vel;
+      }
+
+      if (vel > maxVel) {
+        vel = maxVel;
+      } else if (vel < -maxVel) {
+        vel = -maxVel;
       }
 
       y = subY / 16;
