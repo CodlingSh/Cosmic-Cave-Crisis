@@ -3,6 +3,7 @@
 
 #include <Arduboy2.h>
 #include "enemy.h"
+#include "fuelPad.h"
 
 const uint8_t PROGMEM opening[254][2] = {
   {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, 
@@ -29,6 +30,7 @@ class Level {
   private:
     Arduboy2 *ab;
     Enemy *enemies;
+    FuelPad *fuelPads;
     bool scrolling = true;
     uint8_t lines[254][2];
     uint8_t sectsCompleted = 0;
@@ -39,9 +41,10 @@ class Level {
     int8_t bottomHeight = 1;
     uint8_t mood = 0;
     uint8_t maxEnemies = 13;
+    uint8_t maxFuelPads = 4;
 
   public:
-    Level(Arduboy2 *abPtr, Enemy *enem) : ab(abPtr), enemies(enem) {
+    Level(Arduboy2 *abPtr, Enemy *enem, FuelPad *fp) : ab(abPtr), enemies(enem), fuelPads(fp) {
       memcpy_P(lines, opening, sizeof(lines));
     }
 
@@ -80,17 +83,52 @@ class Level {
         lines[i][0] = offset;
         lines[i][1] = length;
       }
+
+      spawnEnemies();
     }
 
-    void spawnEnemy() {
-      for (uint8_t i = 0; i < maxEnemies; i++) {
-        if (!enemies[i].isActive()) {
-          // Enemy will always spawn on the 140th line
-          enemies[i].spawn(getHighAndLow(140, 8).high, getHighAndLow(140, 8).low);
-          break;
-        }
+    void spawnEnemies() {
+      uint8_t numbers[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+      uint8_t max_enemies = 5;
+
+      for (uint8_t i = max_enemies; i > 0; i--) {
+        
       }
+
+      shuffledNumbers();
+      // for (uint8_t i = 0; i < maxEnemies; i++) {
+      //   if (!enemies[i].isActive()) {
+      //     // Enemy will always spawn on the 140th line
+      //     enemies[i].spawn(getHighAndLow(140, 8).high, getHighAndLow(140, 8).low);
+      //     break;
+      //   }
+      // }
+      
     }
+
+    uint8_t* shuffledNumbers() {
+      static uint8_t numbers[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+      uint8_t firstNum;
+      uint8_t secondNum;
+      uint8_t newPlace;
+
+      for (uint8_t i = 0; i < 15; ++i) {
+        newPlace = random(i, 16);
+        firstNum = numbers[i];
+        secondNum = numbers[newPlace];
+
+        numbers[i] = secondNum;
+        numbers[newPlace] = firstNum;
+      }
+      
+      for (uint8_t i = 0; i < 15; ++i) {
+        Serial.print(numbers[i]);
+        Serial.print(" ");
+      }
+      Serial.println("");
+      Serial.println("");
+      return numbers;
+    } 
 
     void drawBufferLine(uint8_t offset, uint8_t height, uint8_t x) {
       uint8_t *buffer = ab->getBuffer();
@@ -151,7 +189,17 @@ class Level {
 
     void scrollEnemies() {
       for (uint8_t i = 0; i < maxEnemies; i++) {
-        enemies[i].setX(enemies[i].getX() - 1);
+        if (enemies[i].isActive()) {
+          enemies[i].setX(enemies[i].getX() - 1);
+        }
+      }
+    }
+
+    void scrollFuelPads() {
+      for (uint8_t i = 0; i < maxFuelPads; i++) {
+        if (fuelPads[i].isActive()) {
+          fuelPads[i].setX(fuelPads[i].getX() - 1);
+        }
       }
     }
 
@@ -189,9 +237,9 @@ class Level {
         speed -= 1;
 
         if (speed == 0) {
-          if (lineCount % 14 == 0) {
-            spawnEnemy();
-          }
+          // if (lineCount % 14 == 0) {
+          //   spawnEnemy();
+          // }
           scrollLevel();
           scrollEnemies();
           lineCount++;
@@ -222,6 +270,12 @@ class Level {
       for (uint8_t i = 0; i < maxEnemies; i++) {
         if (enemies[i].isActive()) {
           enemies[i].draw();
+        }
+      }
+
+      for (uint8_t i = 0; i < maxFuelPads; i++) {
+        if (fuelPads[i].isActive()) {
+          fuelPads[i].draw();
         }
       }
 
