@@ -9,7 +9,7 @@
 
 Arduboy2 ab;
 Player player(&ab);
-Enemy enemies[13](&player);
+Enemy enemies[17](&player);
 FuelPad fuelPads[13];
 FuelGage fuelGage;
 Level level(&ab, enemies, fuelPads);
@@ -38,7 +38,7 @@ void loop() {
 
   
 
-  for (uint8_t enemy = 0; enemy < 13; enemy++) {
+  for (uint8_t enemy = 0; enemy < 17; enemy++) {
     if (enemyHit(player.getBullet(), enemies[enemy])) {
       enemies[enemy].die();
       player.getBullet().respawn();
