@@ -126,7 +126,7 @@ class Enemy {
 
     void spawn(uint8_t newH, uint8_t newL, uint8_t newX) {
       x = newX;
-      y = random(newH, newL - height);
+      y = random(newH + 5, newL - height - 5);
       highest = newH;
       lowest = newL;
       active = true;
