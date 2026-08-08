@@ -40,7 +40,7 @@ class Level {
     int8_t topHeight = 1;
     int8_t bottomHeight = 1;
     uint8_t mood = 0;
-    uint8_t maxEnemies = 13;
+    uint8_t maxEnemies = 17;
     uint8_t maxFuelPads = 4;
 
   public:
@@ -88,32 +88,36 @@ class Level {
     }
 
     void spawnEnemies() {
-      uint8_t numbers[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-      uint8_t max_enemies = 5;
+      HighAndLow bounds;
+      uint8_t *placements;
+      uint8_t totalEnemies = 8;
 
-      for (uint8_t i = max_enemies; i > 0; i--) {
+      for (uint8_t i = maxEnemies; i > 0; i--) {
         
       }
 
-      shuffledNumbers();
-      // for (uint8_t i = 0; i < maxEnemies; i++) {
-      //   if (!enemies[i].isActive()) {
-      //     // Enemy will always spawn on the 140th line
-      //     enemies[i].spawn(getHighAndLow(140, 8).high, getHighAndLow(140, 8).low);
-      //     break;
-      //   }
-      // }
-      
+      placements = shuffledNumbers();
+
+      for (uint8_t i = 0; i < totalEnemies; i++) {
+        for (uint8_t j = 0; j < maxEnemies; j++) {
+          if (!enemies[j].isActive()) {
+            bounds = getHighAndLow(128 + (16 * placements[i]), enemies[j].getWidth());
+            enemies[j].spawn(bounds.high, bounds.low, 128 + (16 * placements[i]));
+
+            break;
+          }
+        }
+      }      
     }
 
     uint8_t* shuffledNumbers() {
-      static uint8_t numbers[16] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
+      static uint8_t numbers[8] = {0, 1, 2, 3, 4, 5, 6, 7};
       uint8_t firstNum;
       uint8_t secondNum;
       uint8_t newPlace;
 
-      for (uint8_t i = 0; i < 15; ++i) {
-        newPlace = random(i, 16);
+      for (uint8_t i = 0; i < 7; ++i) {
+        newPlace = random(i, 8);
         firstNum = numbers[i];
         secondNum = numbers[newPlace];
 
@@ -121,7 +125,7 @@ class Level {
         numbers[newPlace] = firstNum;
       }
       
-      for (uint8_t i = 0; i < 15; ++i) {
+      for (uint8_t i = 0; i < 7; ++i) {
         Serial.print(numbers[i]);
         Serial.print(" ");
       }
@@ -247,7 +251,7 @@ class Level {
         }
       }
 
-      if (lineCount >= 126) {
+      if (lineCount >= 128) {
         generateLevel();
         lineCount = 0;
       }
