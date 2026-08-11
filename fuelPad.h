@@ -11,7 +11,7 @@ const uint8_t PROGMEM pad[] = {
 
 class FuelPad {
   private:
-    uint8_t x = 222;
+    int16_t x = 222;
     uint8_t y = 222;
     uint8_t width = 14;
     uint8_t height = 8;
@@ -37,8 +37,8 @@ class FuelPad {
       return x;
     }
 
-    void spawn(uint8_t newH, uint8_t newL) {
-      x = 140;
+    void spawn(uint8_t newH, uint8_t newL, uint8_t newX) {
+      x = newX;
       y = random(newH, newL - height);
       highest = newH;
       lowest = newL;
@@ -51,10 +51,20 @@ class FuelPad {
         return;
       }
 
+      if (x >= -10) {
+        x = 222;
+        y = 222;
+        active = false;
+      }
+
       
     }
 
     void draw() {
+      if (!active) {
+        return;
+      }
+
       Sprites::drawOverwrite(x, y, pad, 0);
     }
 };
