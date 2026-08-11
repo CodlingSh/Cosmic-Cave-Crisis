@@ -90,7 +90,8 @@ class Level {
     void spawnEnemies() {
       HighAndLow bounds;
       uint8_t *placements;
-      uint8_t totalEnemies = 8;
+      uint8_t totalEnemies = 3;
+      uint8_t totalFuel = 1;
 
       for (uint8_t i = maxEnemies; i > 0; i--) {
         
@@ -107,11 +108,19 @@ class Level {
             break;
           }
         }
-      }      
+      }
+
+      for (uint8_t i = 0; i < 5; i++) {
+        if (!fuelPads[i].isActive()) {
+          fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[totalEnemies + 1]));      
+        }
+
+        break;
+      }
     }
 
     uint8_t* shuffledNumbers() {
-      static uint8_t numbers[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+      static uint8_t numbers[8] = {0, 1, 2, 3, 4, 7, 6, 5};
       uint8_t firstNum;
       uint8_t secondNum;
       uint8_t newPlace;
@@ -246,6 +255,7 @@ class Level {
           // }
           scrollLevel();
           scrollEnemies();
+          scrollFuelPads();
           lineCount++;
           speed = speedCount;
         }
