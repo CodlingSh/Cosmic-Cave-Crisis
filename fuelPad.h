@@ -37,6 +37,22 @@ class FuelPad {
       return x;
     }
 
+    uint8_t getY() {
+      return y;
+    }
+
+    uint8_t getWidth() {
+      return width;
+    }
+
+    uint8_t getHeight() {
+      return height;
+    }
+
+    bool isDying() {
+      return dying;
+    }
+
     void spawn(uint8_t newH, uint8_t newL, uint8_t newX) {
       x = newX;
       y = random(newH, newL - height);
@@ -51,7 +67,7 @@ class FuelPad {
         return;
       }
 
-      if (x >= -10) {
+      if (x >= -20) {
         x = 222;
         y = 222;
         active = false;
