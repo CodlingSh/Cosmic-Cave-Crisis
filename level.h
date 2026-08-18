@@ -110,12 +110,13 @@ class Level {
         }
       }
 
-      for (uint8_t i = 0; i < 5; i++) {
+      for (uint8_t i = 0; i < 4; i++) {
         if (!fuelPads[i].isActive()) {
-          fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[totalEnemies + 1]));      
+          bounds = getHighAndLow(128 + (16 * placements[i]), fuelPads[i].getWidth());
+          fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[totalEnemies]));
+          break;
         }
 
-        break;
       }
     }
 
@@ -293,8 +294,8 @@ class Level {
         }
       }
 
-      ab->setCursor(90, 0);
-      ab->println(lineCount);
+      // ab->setCursor(90, 0);
+      // ab->println(lineCount);
 
       uint8_t activeCount = 0;
 
