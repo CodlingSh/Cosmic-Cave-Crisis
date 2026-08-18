@@ -84,6 +84,8 @@ void loop() {
 
   ab.setCursor(10, 0);
   ab.print(ab.cpuLoad());
+  ab.setCursor(25, 0);
+  ab.print(fuelGage.getFuel());
   // ab.print(fuelGage.getFuel());
   ab.print("%");
 
