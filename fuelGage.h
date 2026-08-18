@@ -24,7 +24,7 @@ class FuelGage {
     uint8_t x = 222;
     uint8_t y = 222;
     uint32_t lastMillis = 0;
-    int8_t fuel = 47; 
+    int8_t fuel = 50; 
     bool active = true;
   public:
 
@@ -41,6 +41,13 @@ class FuelGage {
     }
 
     void setFuel(int8_t newFuel) {
+      if (newFuel < 0) {
+        newFuel = 0;
+      }
+      else if (newFuel > 46) {
+        newFuel = 46;
+      }
+
       fuel = newFuel;
     }
 
@@ -60,8 +67,16 @@ class FuelGage {
     }
 
     void draw() {
+      uint8_t needlePos = 46 - fuel + 7;
+
+      if (needlePos < 7) {
+        needlePos = 7;
+      } else if (needlePos > 53) {
+        needlePos = 53;
+      }
+
       Sprites::drawOverwrite(0, 0, gage, 0);
-      Sprites::drawPlusMask(0, 46 - fuel + 7, needle, 0);
+      Sprites::drawPlusMask(0, needlePos, needle, 0);
     }
 };
 
