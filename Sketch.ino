@@ -10,7 +10,7 @@
 Arduboy2 ab;
 Player player(&ab);
 Enemy enemies[17](&player);
-FuelPad fuelPads[13];
+FuelPad fuelPads[5];
 FuelGage fuelGage;
 Level level(&ab, enemies, fuelPads);
 Score score;
@@ -44,7 +44,7 @@ void loop() {
       player.getBullet().respawn();
       score.incScore(25);
     }
-    if (playerHit(player, enemies[enemy])){
+    if (playerHit(player, enemies[enemy])) {
       if (!player.isDying()) {
         level.setScrolling(false);
         player.die();
@@ -52,6 +52,12 @@ void loop() {
         fuelGage.setActive(false);
         lives--;
       }
+    }
+  }
+
+  for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
+    if (playerHit(player, fuelPads[fuelPad])) {
+      fuelGage.setFuel(fuelGage.getFuel() + 1);
     }
   }
 
@@ -97,7 +103,8 @@ bool enemyHit(Bullet &blt, Enemy &nme) {
   }
 }
 
-bool playerHit (Player &plr, Enemy &nme) {
+template <typename T>
+bool playerHit (Player &plr, T &nme) {
   if (
     plr.getX() + 8 >= nme.getX() &&
     plr.getX() <= nme.getX() + nme.getWidth() &&
