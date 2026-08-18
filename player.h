@@ -99,8 +99,8 @@ class Player {
         deathTimer++;
 
         if (deathTimer >= 20) {
-          x = 222;
-          y = 222;
+          x = 322;
+          y = 322;
         }
 
         return;
