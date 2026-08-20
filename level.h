@@ -5,7 +5,7 @@
 #include "enemy.h"
 #include "fuelPad.h"
 
-const uint8_t PROGMEM opening[254][2] = {
+const uint8_t PROGMEM opening[256][2] = {
   {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, 
   {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64},
   {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64}, {0, 64},
@@ -32,7 +32,7 @@ class Level {
     Enemy *enemies;
     FuelPad *fuelPads;
     bool scrolling = true;
-    uint8_t lines[254][2];
+    uint8_t lines[256][2];
     uint8_t sectsCompleted = 0;
     uint8_t lineCount = 0;
     uint8_t speed = 2;
@@ -57,7 +57,9 @@ class Level {
       int8_t offset = 0;
       int8_t length = 0;
 
-      for (uint8_t i = 127; i < 254; i++) {
+      sectsCompleted++;
+
+      for (uint16_t i = 127; i < 256; i++) {
         topHeight += values[random(8)];
         bottomHeight += values[random(8)];
 
@@ -110,13 +112,14 @@ class Level {
         }
       }
 
-      for (uint8_t i = 0; i < 4; i++) {
-        if (!fuelPads[i].isActive()) {
-          bounds = getHighAndLow(128 + (16 * placements[i]), fuelPads[i].getWidth());
-          fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[totalEnemies]));
-          break;
+      if (sectsCompleted % 2 == 0) {
+        for (uint8_t i = 0; i < 4; i++) {
+          if (!fuelPads[i].isActive()) {
+            bounds = getHighAndLow(128 + (16 * placements[i]), fuelPads[i].getWidth());
+            fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[totalEnemies]));
+            break;
+          }
         }
-
       }
     }
 
@@ -195,7 +198,7 @@ class Level {
     }
 
     void scrollLevel() {
-      for (uint8_t i = 0; i < 253; i++) {
+      for (uint8_t i = 0; i < 255; i++) {
         lines[i][0] = lines[i + 1][0];
         lines[i][1] = lines[i + 1][1];
       }
@@ -299,15 +302,17 @@ class Level {
 
       uint8_t activeCount = 0;
 
-      for (uint8_t i = 0; i < maxEnemies; i++) {
+      for (uint16_t i = 0; i < maxEnemies; i++) {
         if (enemies[i].isActive()) {
           activeCount++;
         }
       }
 
       ab->setCursor(70, 0);
-      ab->print("E:");
-      ab->print(activeCount);
+      // ab->print("E:");
+      // ab->print(activeCount);
+      ab->print("CS:");
+      ab->print(sectsCompleted);
     }
 };
 
