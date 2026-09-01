@@ -56,8 +56,21 @@ void loop() {
   }
 
   for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
+    if (!playerHit(player, fuelPads[fuelPad])) {
+      fuelGage.setActive(true);
+    }
+  }
+
+  for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
     if (playerHit(player, fuelPads[fuelPad])) {
-      fuelGage.setFuel(fuelGage.getFuel() + 1);
+      fuelGage.setActive(false);
+      if (fuelGage.getCoolDown() <= 0) {
+        fuelGage.setFuel(fuelGage.getFuel() + 1);
+        fuelGage.setCoolDown(12);
+      }
+      else {
+        fuelGage.setCoolDown(fuelGage.getCoolDown() - 1);
+      }
     }
   }
 
