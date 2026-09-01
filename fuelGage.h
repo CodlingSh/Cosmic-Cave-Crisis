@@ -25,6 +25,7 @@ class FuelGage {
     uint8_t y = 222;
     uint32_t lastMillis = 0;
     int8_t fuel = 50; 
+    int8_t coolDown = 10;
     bool active = true;
   public:
 
@@ -49,6 +50,14 @@ class FuelGage {
       }
 
       fuel = newFuel;
+    }
+
+    int8_t getCoolDown() {
+      return coolDown;
+    }
+
+    int8_t setCoolDown(int8_t newCool) {
+      coolDown = newCool;
     }
 
     void setActive(bool state) {

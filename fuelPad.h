@@ -29,11 +29,11 @@ class FuelPad {
       return active;
     }
 
-    void setX(uint8_t newX) {
+    void setX(int16_t newX) {
       x = newX;
     }
 
-    uint8_t getX() {
+    int16_t getX() {
       return x;
     }
 
@@ -53,7 +53,7 @@ class FuelPad {
       return dying;
     }
 
-    void spawn(uint8_t newH, uint8_t newL, uint8_t newX) {
+    void spawn(uint8_t newH, uint8_t newL, int16_t newX) {
       x = newX;
       y = random(newH, newL - height);
       highest = newH;
@@ -67,7 +67,7 @@ class FuelPad {
         return;
       }
 
-      if (x >= -20) {
+      if (x <= -10) {
         x = 222;
         y = 222;
         active = false;
