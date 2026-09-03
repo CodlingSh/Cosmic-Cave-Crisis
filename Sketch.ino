@@ -56,7 +56,7 @@ void loop() {
   }
 
   for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
-    if (!playerHit(player, fuelPads[fuelPad])) {
+    if (!playerHit(player, fuelPads[fuelPad]) && !player.isDying()) {
       fuelGage.setActive(true);
     }
   }
