@@ -15,6 +15,7 @@ FuelGage fuelGage;
 Level level(&ab, enemies, fuelPads);
 Score score;
 int8_t lives = 3;
+uint8_t gameState = 0;
 
 void setup() {
   ab.begin();
@@ -32,6 +33,31 @@ void loop() {
   ab.pollButtons();
   ab.clear();
 
+  switch(gameState) {
+    case 0:
+      titleScreen();
+      break;
+    case 1:
+      mainGameLoop();
+      break;
+  }
+  
+  ab.display();
+}
+
+void titleScreen() {
+  ab.println("THIS IS A TITLE");
+  ab.println("");
+  ab.println("");
+  ab.println("Press a button");
+
+  if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
+        ab.initRandomSeed();
+        gameState = 1;
+  }
+}
+
+void mainGameLoop() {
   level.update();
   player.update();
   fuelGage.update();
@@ -95,14 +121,12 @@ void loop() {
 
   score.draw(lives);
 
-  ab.setCursor(10, 0);
-  ab.print(ab.cpuLoad());
-  ab.setCursor(25, 0);
-  ab.print(fuelGage.getFuel());
+  // ab.setCursor(10, 0);
+  // ab.print(ab.cpuLoad());
+  // ab.setCursor(25, 0);
   // ab.print(fuelGage.getFuel());
-  ab.print("%");
+  // ab.print(fuelGage.getFuel());
 
-  ab.display();
 }
 
 bool enemyHit(Bullet &blt, Enemy &nme) {
