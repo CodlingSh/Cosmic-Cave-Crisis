@@ -16,6 +16,7 @@ Level level(&ab, enemies, fuelPads);
 Score score;
 int8_t lives = 3;
 uint8_t gameState = 0;
+uint8_t screenshot[1024];
 
 void setup() {
   ab.begin();
@@ -34,12 +35,13 @@ void loop() {
   ab.clear();
 
   switch(gameState) {
-    case 0:
+    case 0: // Title
       titleScreen();
       break;
-    case 1:
+    case 1: // Gameplay
       mainGameLoop();
       break;
+    
   }
   
   ab.display();
@@ -58,11 +60,12 @@ void titleScreen() {
 }
 
 void mainGameLoop() {
+  static bool refreshScreen = false;
+  static uint8_t refreshTimer = 120;
+
   level.update();
   player.update();
   fuelGage.update();
-
-  
 
   for (uint8_t enemy = 0; enemy < 17; enemy++) {
     if (enemyHit(player.getBullet(), enemies[enemy])) {
@@ -77,6 +80,7 @@ void mainGameLoop() {
         enemies[enemy].die();
         fuelGage.setActive(false);
         lives--;
+        refreshScreen = true;
       }
     }
   }
@@ -106,27 +110,46 @@ void mainGameLoop() {
         player.die();
         fuelGage.setActive(false);
         lives--;
+        gameState = 7;
       }
   }
 
+  if (refreshTimer)
   level.draw();
   player.draw();
 
-  
-  // ab.fillRect(106, 0, 24, 64, BLACK);
-  // ab.drawBitmap(106, 0, gage, 22, 64, BLACK);
   fuelGage.draw();
   ab.fillRect(121, 0, 7, 64, BLACK);
   ab.drawFastVLine(121, 0, 64, WHITE);
 
   score.draw(lives);
 
-  // ab.setCursor(10, 0);
-  // ab.print(ab.cpuLoad());
+  // Do cool screen effect when player dies
+  if (refreshScreen) {
+    if (refreshTimer > 0) {
+      refreshTimer--;
+      memcpy(screenshot, ab.getBuffer(), sizeof(screenshot));
+    }
+    else {
+      refresh();
+    }
+  }
+
+  ab.setCursor(10, 0);
+  ab.print(ab.cpuLoad());
   // ab.setCursor(25, 0);
   // ab.print(fuelGage.getFuel());
   // ab.print(fuelGage.getFuel());
+}
 
+void refresh() {
+  static uint8_t size = 0;
+
+  // memcpy(ab.getBuffer(), screenshot, sizeof(screenshot));
+  
+  ab.fillRect(64 - (size/2), 32 - (size/2), size, size, WHITE);//(64, 32, size, WHITE);
+
+  if (size < 114) {size++;}
 }
 
 bool enemyHit(Bullet &blt, Enemy &nme) {
