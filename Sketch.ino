@@ -16,7 +16,6 @@ Level level(&ab, enemies, fuelPads);
 Score score;
 int8_t lives = 3;
 uint8_t gameState = 0;
-uint8_t screenshot[1024];
 
 void setup() {
   ab.begin();
@@ -62,6 +61,7 @@ void titleScreen() {
 void mainGameLoop() {
   static bool refreshScreen = false;
   static uint8_t refreshTimer = 120;
+  static uint8_t message = random(0, 15);
 
   level.update();
   player.update();
@@ -114,9 +114,10 @@ void mainGameLoop() {
       }
   }
 
-  if (refreshTimer)
-  level.draw();
-  player.draw();
+  if (refreshTimer > 0) {
+    level.draw();
+    player.draw();
+  }
 
   fuelGage.draw();
   ab.fillRect(121, 0, 7, 64, BLACK);
@@ -128,10 +129,12 @@ void mainGameLoop() {
   if (refreshScreen) {
     if (refreshTimer > 0) {
       refreshTimer--;
-      memcpy(screenshot, ab.getBuffer(), sizeof(screenshot));
+    }
+    else if (refreshTimer == 1) {
+      message = random(0, 15);
     }
     else {
-      refresh();
+      refresh(message);
     }
   }
 
@@ -142,14 +145,29 @@ void mainGameLoop() {
   // ab.print(fuelGage.getFuel());
 }
 
-void refresh() {
-  static uint8_t size = 0;
+void refresh(uint8_t message) {
+  static const char PROGMEM messages[15][14] = {
+    "  Nice try!  ",
+    "  Too slow!  ",
+    " Nice crash! ",
+    "  Too easy!  ",
+    " Pilot fail! ",
+    "  Bad move!  ",
+    "  So close!  ",
+    "    Oops!    ",
+    "   Almost!   ",
+    " Try harder! ",
+    " Not enough! ",
+    "Nice landing!",
+    " Good crash! ",
+    "   Again?!   ",
+    "  So quick!  "
+  };
 
-  // memcpy(ab.getBuffer(), screenshot, sizeof(screenshot));
+  ab.setCursor(27, 28);
+  ab.print(reinterpret_cast<const __FlashStringHelper*>(messages[message]));
   
-  ab.fillRect(64 - (size/2), 32 - (size/2), size, size, WHITE);//(64, 32, size, WHITE);
-
-  if (size < 114) {size++;}
+  // ab.fillRect(7, 0, 114, 64);
 }
 
 bool enemyHit(Bullet &blt, Enemy &nme) {
