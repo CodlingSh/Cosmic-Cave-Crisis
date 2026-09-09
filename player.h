@@ -47,8 +47,8 @@ class Player {
   private:
     Arduboy2 *ab;
     uint8_t *spr = ship;
-    int8_t x = 10;
-    int8_t y = 28;
+    int16_t x = 10;
+    int16_t y = 28;
     int16_t subY = 448;
     int8_t vel = 0;
     int8_t maxVel = 16;
@@ -66,11 +66,11 @@ class Player {
       return bullet;
     }
 
-    uint8_t getX() {
+    uint16_t getX() {
       return x;
     }
 
-    uint8_t getY() {
+    uint16_t getY() {
       return y;
     }
 
@@ -82,6 +82,14 @@ class Player {
       dying = true;
       moving = false;
       spr = shipExp;        
+    }
+
+    void respawn() {
+      deathTimer = 0;
+      dying = false;
+      moving = true;
+      spr = ship;
+      x = 10;        
     }
 
     void fire() {
