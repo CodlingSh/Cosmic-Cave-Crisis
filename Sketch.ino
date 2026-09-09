@@ -40,7 +40,9 @@ void loop() {
     case 1: // Gameplay
       mainGameLoop();
       break;
-    
+    case 7: // Game Over
+      gameOver();
+      break;
   }
   
   ab.display();
@@ -79,8 +81,13 @@ void mainGameLoop() {
         player.die();
         enemies[enemy].die();
         fuelGage.setActive(false);
-        lives--;
         refreshScreen = true;
+        if (lives <= 1) {
+          gameState = 7;
+        }
+        else {
+          lives--;
+        }
       }
     }
   }
@@ -109,8 +116,12 @@ void mainGameLoop() {
         level.setScrolling(false);
         player.die();
         fuelGage.setActive(false);
-        lives--;
-        gameState = 7;
+        if (lives <= 1) {
+          gameState = 7;
+        }
+        else {
+          lives--;
+        }
       }
   }
 
@@ -135,14 +146,32 @@ void mainGameLoop() {
     }
     else {
       refresh(message);
+      
+      // Respawn
+      if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
+        level.setScrolling(true);
+        player.respawn();
+        refreshScreen = false;
+        refreshTimer = 120;
+      }
     }
   }
 
   ab.setCursor(10, 0);
-  ab.print(ab.cpuLoad());
+  // ab.print(player.getX());
+  ab.print(lives);
+  // ab.print(ab.cpuLoad());
   // ab.setCursor(25, 0);
   // ab.print(fuelGage.getFuel());
   // ab.print(fuelGage.getFuel());
+}
+
+void gameOver() {
+  ab.print("Game Over");
+
+  if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
+    gameState = 0;  
+  }
 }
 
 void refresh(uint8_t message) {
@@ -167,7 +196,7 @@ void refresh(uint8_t message) {
   ab.setCursor(27, 28);
   ab.print(reinterpret_cast<const __FlashStringHelper*>(messages[message]));
   
-  // ab.fillRect(7, 0, 114, 64);
+
 }
 
 bool enemyHit(Bullet &blt, Enemy &nme) {
