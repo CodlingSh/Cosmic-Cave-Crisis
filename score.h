@@ -174,7 +174,7 @@ class Score {
       if (tenthousandsVis) {Sprites::drawOverwrite(123, tenthousandsY, getSprite(tenthousandsScore), 0);}
 
       Sprites::drawOverwrite(123, 1, xSym, 0);
-      if (lives > 0 || lives > 9) {
+      if (lives > 0 && lives < 9) {
         Sprites::drawOverwrite(123, 7, getSprite(lives), 0);
       } else {
         Sprites::drawOverwrite(123, 7, getSprite(9), 0);
