@@ -82,7 +82,7 @@ void mainGameLoop() {
         enemies[enemy].die();
         fuelGage.setActive(false);
         refreshScreen = true;
-        if (lives <= 1) {
+        if (lives <= 0) {
           gameState = 7;
         }
         else {
@@ -116,7 +116,7 @@ void mainGameLoop() {
         level.setScrolling(false);
         player.die();
         fuelGage.setActive(false);
-        if (lives <= 1) {
+        if (lives <= 0) {
           gameState = 7;
         }
         else {
@@ -194,7 +194,14 @@ void refresh(uint8_t message) {
   };
 
   ab.setCursor(27, 28);
-  ab.print(reinterpret_cast<const __FlashStringHelper*>(messages[message]));
+
+  if (message == 22) {
+    GameState = 7;
+  }
+  else {
+    ab.print(reinterpret_cast<const __FlashStringHelper*>(messages[message]));
+  }
+
   
 
 }
