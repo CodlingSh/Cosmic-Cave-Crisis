@@ -6,6 +6,7 @@
 #include "enemy.h"
 #include "score.h"
 #include "fuelPad.h"
+#include "title.h"
 
 Arduboy2 ab;
 Player player(&ab);
@@ -14,6 +15,7 @@ FuelPad fuelPads[5];
 FuelGage fuelGage;
 Level level(&ab, enemies, fuelPads);
 Score score;
+Title title;
 int8_t lives = 3;
 uint8_t gameState = 0;
 
@@ -49,10 +51,13 @@ void loop() {
 }
 
 void titleScreen() {
-  ab.println("THIS IS A TITLE");
-  ab.println("");
-  ab.println("");
-  ab.println("Press a button");
+  // ab.println("THIS IS A TITLE");
+  // ab.println("");
+  // ab.println("");
+  // ab.println("Press a button");
+
+  title.draw();
+  title.update();
 
   if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
         ab.initRandomSeed();
@@ -141,9 +146,6 @@ void mainGameLoop() {
     if (refreshTimer > 0) {
       refreshTimer--;
     }
-    else if (refreshTimer == 1) {
-      message = random(0, 15);
-    }
     else {
       refresh(message);
       
@@ -153,6 +155,7 @@ void mainGameLoop() {
         player.respawn();
         refreshScreen = false;
         refreshTimer = 120;
+        message = random(0, 15);
       }
     }
   }
@@ -196,7 +199,7 @@ void refresh(uint8_t message) {
   ab.setCursor(27, 28);
 
   if (message == 22) {
-    GameState = 7;
+     gameState = 7;
   }
   else {
     ab.print(reinterpret_cast<const __FlashStringHelper*>(messages[message]));
