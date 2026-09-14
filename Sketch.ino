@@ -15,7 +15,7 @@ FuelPad fuelPads[5];
 FuelGage fuelGage;
 Level level(&ab, enemies, fuelPads);
 Score score;
-Title title;
+Title title(&ab);
 int8_t lives = 3;
 uint8_t gameState = 0;
 
@@ -59,10 +59,10 @@ void titleScreen() {
   title.draw();
   title.update();
 
-  if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
-        ab.initRandomSeed();
-        gameState = 1;
-  }
+  // if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
+  //       ab.initRandomSeed();
+  //       gameState = 1;
+  // }
 }
 
 void mainGameLoop() {
