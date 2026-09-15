@@ -63,6 +63,7 @@ void titleScreen() {
   //       ab.initRandomSeed();
   //       gameState = 1;
   // }
+  ab.print(ab.cpuLoad());
 }
 
 void mainGameLoop() {
@@ -163,7 +164,7 @@ void mainGameLoop() {
   ab.setCursor(10, 0);
   // ab.print(player.getX());
   ab.print(lives);
-  // ab.print(ab.cpuLoad());
+  //ab.print(ab.cpuLoad());
   // ab.setCursor(25, 0);
   // ab.print(fuelGage.getFuel());
   // ab.print(fuelGage.getFuel());
