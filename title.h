@@ -329,9 +329,9 @@ const uint8_t PROGMEM moon[] = {
 struct Star {
   uint8_t x;
   uint8_t y;
-  uint8_t timer;
-  bool visible;
-}
+  uint8_t life;
+  uint8_t timeOff;
+};
 
 class Title {
   private:
@@ -341,7 +341,32 @@ class Title {
     int16_t groundOffset = 0;
     uint8_t groundSpeed = 6;
     uint8_t titleState = 0;
-    const Star[] stars = { }
+    Star stars[24] = {
+      {6, 26, 0, 0},
+      {8, 37, 0, 0},
+      {18, 32, 0, 0},
+      {30, 24, 0, 0},
+      {29, 36, 0, 0},
+      {36, 33, 0, 0},
+      {45, 37, 0, 0},
+      {44, 28, 0, 0},
+      {49, 24, 0, 0},
+      {61, 18, 0, 0},
+      {65, 16, 0, 0},
+      {64, 47, 0, 0},
+      {80, 36, 0, 0},
+      {79, 24, 0, 0},
+      {88, 27, 0, 0},
+      {90, 36, 0, 0},
+      {94, 32, 0, 0},
+      {104, 33, 0, 0},
+      {98, 27, 0, 0},
+      {109, 34, 0, 0},
+      {111, 26, 0, 0},
+      {117, 31, 0, 0},
+      {123, 25, 0, 0},
+      {121, 38, 0, 0},
+    };
   public:
     Title(Arduboy2 *ab_ptr) : ab(ab_ptr) {}
 
@@ -385,6 +410,12 @@ class Title {
         Sprites::drawOverwrite(85, 6, help, 0);
         Sprites::drawOverwrite(5, 51, options, 0);
         Sprites::drawOverwrite(75, 51, credits, 0);
+        // Stars
+        for (uint8_t j = 0; j < 24; j++) {
+          if (stars[j].life > 0) {
+            ab->drawPixel(stars[j].x, stars[j].y);
+          }
+        }
       }
     }
 
@@ -402,7 +433,28 @@ class Title {
         }
       }
       else if (titleState == 1) {
-        
+        for (uint8_t j = 0; j < 24; j++) {
+          if (stars[j].life > 0) {
+            // Star is visible
+            stars[j].life--;
+
+            if (stars[j].life == 0) {
+              stars[j].timeOff = random(3, 7);
+            }
+          }
+          else if (stars[j].timeOff > 0) {
+            // Star is invisible
+            stars[j].timeOff--;
+
+            if (stars[j].timeOff == 0) {
+              stars[j].life = random(360, 600);
+            }
+          }
+          else {
+              // Initial state
+              stars[j].life = random(360, 600);
+          }
+        } 
       }
     }
 };
