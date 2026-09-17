@@ -7,6 +7,7 @@
 #include "score.h"
 #include "fuelPad.h"
 #include "title.h"
+#include "credits.h"
 
 Arduboy2 ab;
 Player player(&ab);
@@ -15,9 +16,10 @@ FuelPad fuelPads[5];
 FuelGage fuelGage;
 Level level(&ab, enemies, fuelPads);
 Score score;
-Title title(&ab);
-int8_t lives = 3;
 uint8_t gameState = 0;
+Title title(&ab, &gameState);
+Credits credits;
+int8_t lives = 3;
 
 void setup() {
   ab.begin();
@@ -41,6 +43,13 @@ void loop() {
       break;
     case 1: // Gameplay
       mainGameLoop();
+      break;
+    case 4:
+      credits.draw();
+
+      if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
+        gameState = 0;
+      }
       break;
     case 7: // Game Over
       gameOver();
