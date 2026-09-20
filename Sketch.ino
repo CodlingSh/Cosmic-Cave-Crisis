@@ -85,11 +85,14 @@ void mainGameLoop() {
   fuelGage.update();
 
   for (uint8_t enemy = 0; enemy < 17; enemy++) {
+    // If enemy is hit by bullet
     if (enemyHit(player.getBullet(), enemies[enemy])) {
       enemies[enemy].die();
       player.getBullet().respawn();
       score.incScore(25);
     }
+
+    // If player crashes into enemy
     if (playerHit(player, enemies[enemy])) {
       if (!player.isDying()) {
         level.setScrolling(false);
@@ -107,6 +110,7 @@ void mainGameLoop() {
     }
   }
 
+  // If player flies over a fuelpad
   for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
     if (!playerHit(player, fuelPads[fuelPad]) && !player.isDying()) {
       fuelGage.setActive(true);
@@ -126,11 +130,14 @@ void mainGameLoop() {
     }
   }
 
+  // If player has no fuel
   if (fuelGage.getFuel() <= 0) {
     if (!player.isDying()) {
         level.setScrolling(false);
         player.die();
         fuelGage.setActive(false);
+        fuelGage.setActive(false);
+        refreshScreen = true;
         if (lives <= 0) {
           gameState = 7;
         }
@@ -157,11 +164,13 @@ void mainGameLoop() {
       refreshTimer--;
     }
     else {
+      fuelGage.setFuel(fuelGage.getFuel() + 1);
       refresh(message);
       
       // Respawn
       if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
         level.setScrolling(true);
+        fuelGage.setFuel(48);
         player.respawn();
         refreshScreen = false;
         refreshTimer = 120;
