@@ -189,7 +189,19 @@ void mainGameLoop() {
 }
 
 void gameOver() {
-  ab.print("Game Over");
+  uint8_t x = 34;
+  uint8_t y = 5;
+  // GAME
+  Sprites::drawOverwrite(x, y, g, 0);
+  Sprites::drawOverwrite(x+14, y, a, 0);
+  Sprites::drawOverwrite(x+28, y, m, 0);
+  Sprites::drawOverwrite(x+46, y, e, 0);
+  // OVER
+  Sprites::drawOverwrite(x+2, y+15, o, 0);
+  Sprites::drawOverwrite(x+16, y+15, v, 0);
+  Sprites::drawOverwrite(x+30, y+15, e, 0);
+  Sprites::drawOverwrite(x+44, y+15, r, 0);
+
 
   if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
     gameState = 0;  
