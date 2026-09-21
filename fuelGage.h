@@ -64,6 +64,10 @@ class FuelGage {
       active = state;
     }
 
+    bool getActive() {
+      return active;
+    }
+
     void update() {
       const uint32_t currentMillis = millis();
 
