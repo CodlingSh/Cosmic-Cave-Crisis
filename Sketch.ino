@@ -180,8 +180,9 @@ void mainGameLoop() {
   }
 
   ab.setCursor(10, 0);
+  ab.print(fuelGage.getActive());
   // ab.print(player.getX());
-  ab.print(lives);
+  //ab.print(lives);
   //ab.print(ab.cpuLoad());
   // ab.setCursor(25, 0);
   // ab.print(fuelGage.getFuel());
@@ -257,9 +258,9 @@ template <typename T>
 bool playerHit (Player &plr, T &nme) {
   if (
     plr.getX() + 8 >= nme.getX() &&
-    plr.getX() <= nme.getX() + nme.getWidth() &&
+    plr.getX() < nme.getX() + nme.getWidth() &&
     plr.getY() + 8 >= nme.getY() &&
-    plr.getY() <= nme.getY() + nme.getHeight() &&
+    plr.getY() < nme.getY() + nme.getHeight() &&
     !nme.isDying()
   ) {
     return true;
