@@ -1,19 +1,20 @@
 #ifndef FUELPAD_H
 #define FUELPAD_H
 
-// 14x8, 1 frame(s), 16 bytes
-// Example: Sprites::drawOverwrite(x, y, pad, frame);
-const uint8_t PROGMEM pad[] = {
-  14, 8,
-  0xff, 0x81, 0x81, 0x81, 0xff, 0xff, 0xff, 0x81, 0x81, 0x81, 0xff, 0x7e,
-  0x3c, 0x18,
+// 17x8, 1 frame(s), 36 bytes
+// Example: Sprites::drawPlusMask(x, y, fuelpad, frame);
+const uint8_t PROGMEM fuelpad[] = {
+  17, 8,
+  0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x81, 0xff, 0x81, 0xff, 0x81, 0xff,
+  0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x81, 0xff, 0x81, 0xff, 0x81, 0xff,
+  0xff, 0xff, 0xff, 0xff, 0x7e, 0x7e, 0x3c, 0x3c, 0x18, 0x18,
 };
 
 class FuelPad {
   private:
     int16_t x = 222;
     uint8_t y = 222;
-    uint8_t width = 14;
+    uint8_t width = 17;
     uint8_t height = 8;
     //const uint8_t *spr = nullox;
     uint8_t highest = 0;
@@ -81,7 +82,7 @@ class FuelPad {
         return;
       }
 
-      Sprites::drawOverwrite(x, y, pad, 0);
+      Sprites::drawPlusMask(x, y, fuelpad, 0);
     }
 };
 
