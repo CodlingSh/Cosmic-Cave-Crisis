@@ -39,7 +39,7 @@ class Level {
     uint8_t speedCount = 4;
     int8_t topHeight = 1;
     int8_t bottomHeight = 1;
-    uint8_t mood = 0;
+    uint8_t mood = 3;
     uint8_t maxEnemies = 17;
     uint8_t maxFuelPads = 4;
 
@@ -56,6 +56,37 @@ class Level {
       const int8_t values[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
       int8_t offset = 0;
       int8_t length = 0;
+      uint8_t topMaxBoundary = 4;
+      uint8_t bottomMaxBoundary = 4;
+      uint8_t topMinBoundary = 1;
+      uint8_t bottomMinBoundary = 1;
+
+      switch(mood) {
+        case 0: // Standard
+          topMaxBoundary = 4;
+          bottomMaxBoundary = 4;
+          topMinBoundary = 1;
+          bottomMinBoundary = 1;
+          break;
+        case 1: // Top comes down
+          topMaxBoundary = 16;
+          bottomMaxBoundary = 4;
+          topMinBoundary = 8;
+          bottomMinBoundary = 1;
+          break;
+        case 2: // Bottom comes up
+          topMaxBoundary = 4;
+          bottomMaxBoundary = 16;
+          topMinBoundary = 1;
+          bottomMinBoundary = 8;
+          break;
+        case 3: // Everything becomes narrow
+          topMaxBoundary = 16;
+          bottomMaxBoundary = 16;
+          topMinBoundary = 8;
+          bottomMinBoundary = 8;
+          break;
+      }
 
       sectsCompleted++;
 
@@ -63,20 +94,20 @@ class Level {
         topHeight += values[random(8)];
         bottomHeight += values[random(8)];
 
-        if (topHeight <= 0) {
-          topHeight = 1;
+        if (topHeight <= topMinBoundary) {
+          topHeight = topMinBoundary;
         }
 
-        if (bottomHeight <= 0) {
-          bottomHeight = 1;
+        if (bottomHeight <= bottomMinBoundary) {
+          bottomHeight = bottomMinBoundary;
         }
 
-        if (topHeight >= 4) {
-          topHeight = 3;
+        if (topHeight >= topMaxBoundary) {
+          topHeight = topMaxBoundary - 1;
         }
 
-        if (bottomHeight >= 4) {
-          bottomHeight = 3;
+        if (bottomHeight >= bottomMaxBoundary) {
+          bottomHeight = bottomMaxBoundary - 1;
         }
 
         offset = topHeight;
