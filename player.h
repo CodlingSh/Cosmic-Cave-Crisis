@@ -12,6 +12,16 @@ const uint8_t PROGMEM ship[] = {
   0x1c, 0x1c, 0x08, 0x08,
 };
 
+// 10x16, 1 frame(s), 42 bytes
+// Example: Sprites::drawPlusMask(x, y, shadow, frame);
+const uint8_t PROGMEM shadow[] = {
+  10, 16,
+  0x00, 0x93, 0x00, 0xff, 0x00, 0xff, 0x00, 0xff, 0x00, 0xff, 0x00, 0xfe,
+  0x00, 0xfe, 0x00, 0x7c, 0x00, 0x38, 0x00, 0x10, 0x00, 0x01, 0x00, 0x01,
+  0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00,
+};
+
 // 10x16, 5 frame(s), 202 bytes
 // Example: Sprites::drawPlusMask(x, y, explosion, frame);
 const uint8_t PROGMEM shipExp[] = {
@@ -66,11 +76,11 @@ class Player {
       return bullet;
     }
 
-    uint16_t getX() {
+    int16_t getX() {
       return x;
     }
 
-    uint16_t getY() {
+    int16_t getY() {
       return y;
     }
 
@@ -162,6 +172,7 @@ class Player {
       if (dying) {
         Sprites::drawPlusMask(x, y, spr, deathTimer / 4);
       } else {
+        Sprites::drawPlusMask(x-1, y-1, shadow, 0);
         Sprites::drawPlusMask(x, y, spr, 0);
       }
 
