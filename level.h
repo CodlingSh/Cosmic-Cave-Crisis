@@ -39,7 +39,7 @@ class Level {
     uint8_t speedCount = 4;
     int8_t topHeight = 1;
     int8_t bottomHeight = 1;
-    uint8_t mood = 3;
+    uint8_t mood = 0;
     uint8_t maxEnemies = 17;
     uint8_t maxFuelPads = 4;
 
@@ -90,24 +90,31 @@ class Level {
 
       sectsCompleted++;
 
+      if (sectsCompleted % 5 == 0) {
+        mood = random(1, 4);
+        if (sectsCompleted % 20 == 0) {
+          mood = 0;
+        }
+      }
+
       for (uint16_t i = 127; i < 256; i++) {
         topHeight += values[random(8)];
         bottomHeight += values[random(8)];
 
         if (topHeight <= topMinBoundary) {
-          topHeight = topMinBoundary;
+          topHeight += 1 ;
         }
 
         if (bottomHeight <= bottomMinBoundary) {
-          bottomHeight = bottomMinBoundary;
+          bottomHeight += 1;
         }
 
         if (topHeight >= topMaxBoundary) {
-          topHeight = topMaxBoundary - 1;
+          topHeight -= 1;
         }
 
         if (bottomHeight >= bottomMaxBoundary) {
-          bottomHeight = bottomMaxBoundary - 1;
+          bottomHeight -= 1;
         }
 
         offset = topHeight;
@@ -318,7 +325,7 @@ class Level {
       // ab->drawFastHLine(0, 0, 128, WHITE);
       // ab->drawFastHLine(0, 63, 128, WHITE);
 
-      for (uint8_t i = 0; i < 127; i++) {
+      for (uint8_t i = 0; i <= 127; i++) {
         drawBufferLine(lines[i][0], lines[i][1], i);
       }
 

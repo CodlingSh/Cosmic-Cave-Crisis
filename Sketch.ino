@@ -181,6 +181,8 @@ void mainGameLoop() {
 
   ab.setCursor(10, 0);
   ab.print(fuelGage.getActive());
+  ab.setCursor(50, 0);
+  ab.print(fuelPads[0].getWidth());
   // ab.print(player.getX());
   //ab.print(lives);
   //ab.print(ab.cpuLoad());
@@ -236,9 +238,6 @@ void refresh(uint8_t message) {
   else {
     ab.print(reinterpret_cast<const __FlashStringHelper*>(messages[message]));
   }
-
-  
-
 }
 
 bool enemyHit(Bullet &blt, Enemy &nme) {
