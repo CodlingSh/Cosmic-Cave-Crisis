@@ -100,12 +100,13 @@ void mainGameLoop() {
         enemies[enemy].die();
         fuelGage.setActive(false);
         refreshScreen = true;
-        if (lives <= 0) {
-          gameState = 7;
-        }
-        else {
-          lives--;
-        }
+        lives--;
+        // if (lives <= 0) {
+        //   gameState = 7;
+        // }
+        // else {
+        //   lives--;
+        // }
       }
     }
   }
@@ -138,12 +139,7 @@ void mainGameLoop() {
         fuelGage.setActive(false);
         fuelGage.setActive(false);
         refreshScreen = true;
-        if (lives <= 0) {
-          gameState = 7;
-        }
-        else {
-          lives--;
-        }
+        lives--;
       }
   }
 
@@ -165,6 +161,7 @@ void mainGameLoop() {
     }
     else {
       fuelGage.setFuel(fuelGage.getFuel() + 1);
+      
       refresh(message);
       
       // Respawn
@@ -231,12 +228,10 @@ void refresh(uint8_t message) {
   };
 
   ab.setCursor(27, 28);
+  ab.print(reinterpret_cast<const __FlashStringHelper*>(messages[message]));
 
-  if (message == 22) {
-     gameState = 7;
-  }
-  else {
-    ab.print(reinterpret_cast<const __FlashStringHelper*>(messages[message]));
+  if (lives <= 0) {
+    gameState = 7;
   }
 }
 
