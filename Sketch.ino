@@ -27,6 +27,7 @@ void setup() {
   ab.initRandomSeed();
 
   lives = 3;
+  level.resetLevel();
   
   Serial.begin(9600);
 }
@@ -140,9 +141,22 @@ void mainGameLoop() {
         fuelGage.setActive(false);
         refreshScreen = true;
         lives--;
-      }
+    }
   }
 
+  // If player hits a wall
+  if (level.getHighAndLow(player.getX(), 8).high >= player.getY() ||
+      level.getHighAndLow(player.getX(), 8).low <= player.getY() + 7) {
+    if (!player.isDying()) {
+        level.setScrolling(false);
+        player.die();
+        fuelGage.setActive(false);
+        fuelGage.setActive(false);
+        refreshScreen = true;
+        lives--;
+    }
+  }
+ 
   if (refreshTimer > 0) {
     level.draw();
     player.draw();
@@ -204,8 +218,15 @@ void gameOver() {
 
 
   if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
-    gameState = 0;  
+    resetGame();  
   }
+}
+
+void resetGame() {
+  gameState = 0;
+  lives = 3;
+  level.resetLevel();
+  score.resetScore();
 }
 
 void refresh(uint8_t message) {
