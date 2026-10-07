@@ -45,7 +45,16 @@ class Level {
 
   public:
     Level(Arduboy2 *abPtr, Enemy *enem, FuelPad *fp) : ab(abPtr), enemies(enem), fuelPads(fp) {
+      //memcpy_P(lines, opening, sizeof(lines));
+    }
+
+    void resetLevel() {
       memcpy_P(lines, opening, sizeof(lines));
+      sectsCompleted = 0;
+      lineCount = 0;
+      topHeight = 1;
+      bottomHeight = 1;
+      mood = 0;
     }
 
     void setScrolling(bool newScroll) {
