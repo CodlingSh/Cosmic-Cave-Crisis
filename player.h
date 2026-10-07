@@ -99,7 +99,8 @@ class Player {
       dying = false;
       moving = true;
       spr = ship;
-      x = 10;        
+      x = 10;
+      subY = 448;        
     }
 
     void fire() {
