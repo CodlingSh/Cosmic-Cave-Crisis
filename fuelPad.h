@@ -63,6 +63,12 @@ class FuelPad {
       moving = false;
     }
 
+    void despawn() {
+      x = 222;
+      y = 222;
+      active = false;
+    }
+
     void update() {
       if (!active) {
         return;
