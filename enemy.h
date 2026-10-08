@@ -111,6 +111,10 @@ class Enemy {
       active = isActive;
     }
 
+    void setMoving(bool isMoving) {
+      moving = isMoving;
+    }
+
     uint8_t getWidth() {
       return width;
     }
