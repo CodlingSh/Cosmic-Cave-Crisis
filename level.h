@@ -55,6 +55,8 @@ class Level {
       topHeight = 1;
       bottomHeight = 1;
       mood = 0;
+      despawnEnemies();
+      despawnFuelpads();
     }
 
     void setScrolling(bool newScroll) {
@@ -142,10 +144,6 @@ class Level {
       uint8_t totalEnemies = 3;
       uint8_t totalFuel = 1;
 
-      for (uint8_t i = maxEnemies; i > 0; i--) {
-        
-      }
-
       placements = shuffledNumbers();
 
       for (uint8_t i = 0; i < totalEnemies; i++) {
@@ -167,6 +165,21 @@ class Level {
             break;
           }
         }
+      }
+    }
+
+    void despawnEnemies() {
+      for (uint8_t i = 0; i < maxEnemies; i++) {
+        enemies[i].setX(200);
+        enemies[i].setX(100);
+        enemies[i].setActive(false);
+        enemies[i].setMoving(false);
+      }
+    }
+
+    void despawnFuelpads() {
+      for (uint8_t i = 0; i < maxFuelPads; i++) {
+        fuelPads[i].despawn();
       }
     }
 
