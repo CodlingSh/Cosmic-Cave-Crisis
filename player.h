@@ -68,6 +68,7 @@ class Player {
     bool dying = false;
     int8_t deathTimer = 0;
     bool moving = true;
+    uint8_t spawnTimer = 60;
     
   public:
     Player(Arduboy2 *ab_ptr) : ab(ab_ptr), bullet(ab_ptr) {}
@@ -82,6 +83,10 @@ class Player {
 
     int16_t getY() {
       return y;
+    }
+
+    bool isMoving() {
+      return moving;
     }
 
     bool isDying() {
@@ -113,6 +118,13 @@ class Player {
 
     void update() {
       bullet.update();
+
+      if (spawnTimer > 0) {
+        spawnTimer--;
+        moving = false;
+      } else {
+        moving = true;
+      }
 
       if (dying) {
         deathTimer++;
