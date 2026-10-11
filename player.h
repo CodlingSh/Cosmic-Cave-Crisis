@@ -105,7 +105,9 @@ class Player {
       moving = true;
       spr = ship;
       x = 10;
-      subY = 448;        
+      subY = 448;
+      y = subY / 16; 
+      spawnTimer = 30;     
     }
 
     void fire() {
