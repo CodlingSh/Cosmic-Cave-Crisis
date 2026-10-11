@@ -303,7 +303,7 @@ class Level {
     void update() {
 
       if (scrolling){
-        if (ab->pressed(LEFT_BUTTON) && player || ab->pressed(B_BUTTON)) {
+        if (ab->pressed(LEFT_BUTTON) /*&& player*/ || ab->pressed(B_BUTTON)) {
           speedCount = 6;
         } else if (ab->pressed(RIGHT_BUTTON)) {
           speedCount = 1;
