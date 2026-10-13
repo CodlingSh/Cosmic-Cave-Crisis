@@ -20,6 +20,8 @@ uint8_t gameState = 0;
 Title title(&ab, &gameState);
 Credits credits;
 int8_t lives = 3;
+bool refreshScreen = false;
+uint8_t refreshTimer = 120;
 
 void setup() {
   ab.begin();
@@ -77,8 +79,6 @@ void titleScreen() {
 }
 
 void mainGameLoop() {
-  static bool refreshScreen = false;
-  static uint8_t refreshTimer = 120;
   static uint8_t message = random(0, 15);
 
   level.update();
@@ -102,12 +102,6 @@ void mainGameLoop() {
         fuelGage.setActive(false);
         refreshScreen = true;
         lives--;
-        // if (lives <= 0) {
-        //   gameState = 7;
-        // }
-        // else {
-        //   lives--;
-        // }
       }
     }
   }
@@ -227,6 +221,9 @@ void resetGame() {
   lives = 3;
   level.resetLevel();
   score.resetScore();
+  level.setScrolling(true);
+  fuelGage.setFuel(48);
+  player.respawn();
 }
 
 void refresh(uint8_t message) {
@@ -253,6 +250,8 @@ void refresh(uint8_t message) {
 
   if (lives <= 0) {
     gameState = 7;
+    refreshTimer = 120;
+    refreshScreen = false;
   }
 }
 
