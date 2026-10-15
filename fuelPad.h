@@ -54,6 +54,10 @@ class FuelPad {
       return dying;
     }
 
+    void destroy() {
+      dying = true;
+    }
+
     void spawn(uint8_t newH, uint8_t newL, int16_t newX) {
       x = newX;
       y = random(newH, newL - height);
@@ -80,7 +84,17 @@ class FuelPad {
         active = false;
       }
 
-      
+      if (dying) {
+        deathTimer++;
+
+        if (deathTimer >= 10) {
+          x = 222;
+          y = 222;
+          dying = false;
+          active = false;
+          deathTimer = 0;
+        }
+      }
     }
 
     void draw() {
@@ -88,7 +102,12 @@ class FuelPad {
         return;
       }
 
-      Sprites::drawPlusMask(x, y, fuelpad, 0);
+      if (dying) {
+        Sprites::drawPlusMask(x, y, explosion, deathTimer / 2);  
+      } else {
+        Sprites::drawPlusMask(x, y, fuelpad, 0);
+      }
+
     }
 };
 
