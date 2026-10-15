@@ -106,7 +106,7 @@ void mainGameLoop() {
     }
   }
 
-  // If player flies over a fuelpad
+  // This ensures fuelpads stop dropping when not flying over one. Has to happen twice. Do not delete.
   for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
     if (!playerHit(player, fuelPads[fuelPad]) && !player.isDying()) {
       fuelGage.setActive(true);
@@ -114,6 +114,7 @@ void mainGameLoop() {
   }
 
   for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
+    // If player flies over a fuelpad 
     if (playerHit(player, fuelPads[fuelPad])) {
       fuelGage.setActive(false);
       if (fuelGage.getCoolDown() <= 0) {
@@ -123,6 +124,13 @@ void mainGameLoop() {
       else {
         fuelGage.setCoolDown(fuelGage.getCoolDown() - 1);
       }
+    }
+
+    // If bullet hits fuelpad
+    if (enemyHit(player.getBullet(), fuelPads[fuelPad])) {
+      fuelPads[fuelPad].destroy();
+      player.getBullet().respawn();
+      score.incScore(250);
     }
   }
 
@@ -255,7 +263,8 @@ void refresh(uint8_t message) {
   }
 }
 
-bool enemyHit(Bullet &blt, Enemy &nme) {
+template <typename T>
+bool enemyHit(Bullet &blt, T &nme) {
   if (
     blt.getX() + 3 >= nme.getX() &&
     blt.getX() <= nme.getX() + nme.getWidth() &&
