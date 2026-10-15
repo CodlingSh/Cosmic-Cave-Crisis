@@ -105,7 +105,7 @@ class Score {
       tenthousandsVis = false;
     }
 
-    void incScore(int8_t points) {
+    void incScore(int16_t points) {
       score += points;
 
       tenthousandsScore = score / 10000;
