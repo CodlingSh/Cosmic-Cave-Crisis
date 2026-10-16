@@ -40,14 +40,21 @@ const uint8_t PROGMEM nullox[] = {
   0x11, 0x7f,
 };
 
+// 8x8, 1 frame(s), 10 bytes
+// Example: Sprites::drawOverwrite(x, y, mover, frame);
+const uint8_t PROGMEM mover[] = {
+  8, 8,
+  0x98, 0x5c, 0xf6, 0x7f, 0x7f, 0xf6, 0x5c, 0x98,
+};
+
 class Enemy {
   private:
     Player *player;
     int16_t x = 200;
     uint8_t y = 100;
-    uint8_t width = 7;
+    uint8_t width = 8;
     uint8_t height = 8;
-    const uint8_t *spr = nullox;
+    const uint8_t *spr = mover;
     uint8_t highest = 0;
     uint8_t lowest = 0;
     bool active = false;
@@ -189,10 +196,8 @@ class Enemy {
       if (dying) {
         Sprites::drawPlusMask(x, y, explosion, deathTimer / 2);  
       } else {
-        Sprites::drawPlusMask(x, y, spr, 0);
-      }
-
-          
+        Sprites::drawOverwrite(x, y, spr, 0);
+      }    
     }
 };
 
