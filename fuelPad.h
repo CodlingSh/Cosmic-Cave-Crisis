@@ -60,7 +60,7 @@ class FuelPad {
 
     void spawn(uint8_t newH, uint8_t newL, int16_t newX) {
       x = newX;
-      y = random(newH, newL - height);
+      y = random(newH + 3, newL - height - 3);
       highest = newH;
       lowest = newL;
       active = true;
