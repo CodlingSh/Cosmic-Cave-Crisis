@@ -1,6 +1,15 @@
 #ifndef SCORE_H
 #define SCORE_H
 
+// 27x8, 1 frame(s), 29 bytes
+// Example: Sprites::drawOverwrite(x, y, scoreHead, frame);
+const uint8_t PROGMEM scoreHead[] = {
+  27, 8,
+  0x26, 0x49, 0x49, 0x32, 0x00, 0x3e, 0x41, 0x41, 0x22, 0x00, 0x3e, 0x41,
+  0x41, 0x3e, 0x00, 0x7f, 0x09, 0x09, 0x76, 0x00, 0x3e, 0x49, 0x49, 0x41,
+  0x00, 0x00, 0x22,
+};
+
 // 4x8, 1 frame(s), 4 bytes
 // Example: Sprites::drawOverwrite(x, y, zero, frame);
 const uint8_t PROGMEM zero[] = {
@@ -113,6 +122,26 @@ class Score {
       hundredsScore = (score / 100) % 10;
       tensScore = (score / 10) % 10;
       onesScore = (score / 1) % 10;
+    }
+
+    uint8_t getOnes() {
+      return onesScore;
+    }
+
+    uint8_t getTens() {
+      return tensScore;
+    }
+
+    uint8_t getHundreds() {
+      return hundredsScore;
+    }
+
+    uint8_t getThousands() {
+      return thousandsScore;
+    }
+
+    uint8_t getTenThousands() {
+      return tenthousandsScore;
     }
 
     const uint8_t* getSprite(uint8_t number) {
