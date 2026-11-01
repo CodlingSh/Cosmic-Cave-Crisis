@@ -205,18 +205,37 @@ void mainGameLoop() {
 }
 
 void gameOver() {
-  uint8_t x = 34;
-  uint8_t y = 5;
+  uint8_t x = 4;
+  uint8_t y = 17;
+  
   // GAME
   Sprites::drawOverwrite(x, y, g, 0);
   Sprites::drawOverwrite(x+14, y, a, 0);
   Sprites::drawOverwrite(x+28, y, m, 0);
   Sprites::drawOverwrite(x+46, y, e, 0);
   // OVER
-  Sprites::drawOverwrite(x+2, y+15, o, 0);
-  Sprites::drawOverwrite(x+16, y+15, v, 0);
-  Sprites::drawOverwrite(x+30, y+15, e, 0);
-  Sprites::drawOverwrite(x+44, y+15, r, 0);
+  Sprites::drawOverwrite(x+65, y, o, 0);
+  Sprites::drawOverwrite(x+79, y, v, 0);
+  Sprites::drawOverwrite(x+93, y, e, 0);
+  Sprites::drawOverwrite(x+107, y, r, 0);
+
+  // SCORE
+  Sprites::drawOverwrite(x+35, y+24, scoreHead, 0);
+
+  if (score.getScore() > 9999) {
+    Sprites::drawOverwrite(x+66, y+24, score.getSprite(score.getTenThousands()), 0);
+  }
+  if (score.getScore() > 999) {
+    Sprites::drawOverwrite(x+71, y+24, score.getSprite(score.getThousands()), 0);
+  }
+  if (score.getScore() > 99) {
+    Sprites::drawOverwrite(x+76, y+24, score.getSprite(score.getHundreds()), 0);
+  }
+  if (score.getScore() > 9) {
+    Sprites::drawOverwrite(x+81, y+24, score.getSprite(score.getTens()), 0);
+  }
+  Sprites::drawOverwrite(x+86, y+24, score.getSprite(score.getOnes()), 0);
+  
 
 
   if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
