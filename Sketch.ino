@@ -1,3 +1,13 @@
+/*
+ * TODO: 
+ * - Fix enemy/Fuelpad spawning
+ * - Add other enemy types
+ * - Change the Moon graphic *MAYBE*
+ * - Add credits
+ * - Add Options
+ * - Add Help
+ */
+
 #include <Arduboy2.h>
 #include "player.h"
 #include "bullet.h"
