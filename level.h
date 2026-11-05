@@ -146,26 +146,28 @@ class Level {
 
       placements = shuffledNumbers();
 
-      for (uint8_t i = 0; i < totalEnemies; i++) {
-        for (uint8_t j = 0; j < maxEnemies; j++) {
-          if (!enemies[j].isActive()) {
-            bounds = getHighAndLow(128 + (16 * placements[i]), enemies[j].getWidth());
-            enemies[j].spawn(bounds.high, bounds.low, 128 + (16 * placements[i]));
 
-            break;
-          }
-        }
-      }
 
-      if (sectsCompleted % 2 == 0) {
-        for (uint8_t i = 0; i < 4; i++) {
-          if (!fuelPads[i].isActive()) {
-            bounds = getHighAndLow(128 + (16 * placements[i]), fuelPads[i].getWidth());
-            fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[totalEnemies]));
-            break;
-          }
-        }
-      }
+      // for (uint8_t i = 0; i < totalEnemies; i++) {
+      //   for (uint8_t j = 0; j < maxEnemies; j++) {
+      //     if (!enemies[j].isActive()) {
+      //       bounds = getHighAndLow(128 + (16 * placements[i]), enemies[j].getWidth());
+      //       enemies[j].spawn(bounds.high, bounds.low, 128 + (16 * placements[i]));
+
+      //       break;
+      //     }
+      //   }
+      // }
+
+      // if (sectsCompleted % 2 == 0) {
+      //   for (uint8_t i = 0; i < 4; i++) {
+      //     if (!fuelPads[i].isActive()) {
+      //       bounds = getHighAndLow(128 + (16 * placements[i]), fuelPads[i].getWidth());
+      //       fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[totalEnemies]));
+      //       break;
+      //     }
+      //   }
+      // }
     }
 
     void despawnEnemies() {
@@ -184,12 +186,13 @@ class Level {
     }
 
     uint8_t* shuffledNumbers() {
-      static uint8_t numbers[8] = {0, 1, 2, 3, 4, 7, 6, 5};
+      static uint8_t numbers[8] = {0, 1, 2, 3, 4, 5, 6, 7};
       uint8_t firstNum;
       uint8_t secondNum;
       uint8_t newPlace;
+      uint8_t count = 0;
 
-      for (uint8_t i = 0; i < 7; ++i) {
+      for (uint8_t i = 0; i < 8; ++i) {
         newPlace = random(i, 8);
         firstNum = numbers[i];
         secondNum = numbers[newPlace];
@@ -197,11 +200,32 @@ class Level {
         numbers[i] = secondNum;
         numbers[newPlace] = firstNum;
       }
+
+      // Make it so that first index is not 7
+      if (numbers[0] == 7) {
+        newPlace = random(2, 8);
+        numbers[0] = numbers[newPlace];
+        numbers[newPlace] = 7;
+      }
+
+      // Make it so the second number in the array is the first number + 1
+      for (uint8_t i = 1; i < 8; ++i) {
+        count++;
+        if (numbers[i] == numbers[0] + 1) {
+          newPlace = numbers[count]; 
+          numbers[count] = numbers[1];
+          numbers[1] = newPlace;
+          break;
+        }
+      }
       
-      for (uint8_t i = 0; i < 7; ++i) {
+      for (uint8_t i = 0; i < 8; ++i) {
         Serial.print(numbers[i]);
         Serial.print(" ");
       }
+      Serial.println("");
+      Serial.println("");
+      Serial.println(count);
       Serial.println("");
       Serial.println("");
       return numbers;
