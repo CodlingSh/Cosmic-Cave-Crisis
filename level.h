@@ -146,28 +146,25 @@ class Level {
 
       placements = shuffledNumbers();
 
+      if (sectsCompleted % 2 == 0) {
+        for (uint8_t i = 0; i < 2; ++i) {
+          if (!fuelPads[i].isActive()) {
+            bounds = getHighAndLow(128 + (16 * placements[0]), fuelPads[i].getWidth());
+            fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[0]));
+            break;
+          }
+        }
+      }
 
-
-      // for (uint8_t i = 0; i < totalEnemies; i++) {
-      //   for (uint8_t j = 0; j < maxEnemies; j++) {
-      //     if (!enemies[j].isActive()) {
-      //       bounds = getHighAndLow(128 + (16 * placements[i]), enemies[j].getWidth());
-      //       enemies[j].spawn(bounds.high, bounds.low, 128 + (16 * placements[i]));
-
-      //       break;
-      //     }
-      //   }
-      // }
-
-      // if (sectsCompleted % 2 == 0) {
-      //   for (uint8_t i = 0; i < 4; i++) {
-      //     if (!fuelPads[i].isActive()) {
-      //       bounds = getHighAndLow(128 + (16 * placements[i]), fuelPads[i].getWidth());
-      //       fuelPads[i].spawn(bounds.high, bounds.low, 128 + (16 * placements[totalEnemies]));
-      //       break;
-      //     }
-      //   }
-      // }
+      for (uint8_t i = 2; i < totalEnemies + 2; ++i) {
+        for (uint8_t j = 0; j < maxEnemies; ++j) {
+          if (!enemies[j].isActive()) {
+            bounds = getHighAndLow(128 + (16 * placements[i]), enemies[j].getWidth());
+            enemies[j].spawn(bounds.high, bounds.low, 128 + (16 * placements[i]));
+            break;
+          }
+        }
+      }
     }
 
     void despawnEnemies() {
