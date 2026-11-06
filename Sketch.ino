@@ -1,7 +1,7 @@
 /*
  * TODO: 
- * - Fix enemy/Fuelpad spawning
  * - Add other enemy types
+ * - Add difficulty curve
  * - Change the Moon graphic *MAYBE*
  * - Add credits
  * - Add Options
