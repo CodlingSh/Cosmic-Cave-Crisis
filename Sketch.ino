@@ -6,6 +6,7 @@
  * - Add credits
  * - Add Options
  * - Add Help
+ * - Add sounds
  */
 
 #include <Arduboy2.h>
@@ -304,6 +305,8 @@ void mainGameLoop() {
       // Respawn
       if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
         level.setScrolling(true);
+        level.despawnEnemies();
+        level.despawnFuelpads();
         fuelGage.setFuel(48);
         player.respawn();
         refreshScreen = false;
@@ -388,6 +391,9 @@ void refresh(uint8_t message) {
 template <typename T>
 bool enemyHit(Bullet &blt, T &nme) {
   if (
+    blt.getActive() &&
+    nme.isActive() &&
+    !nme.isDying() &&
     blt.getX() + 3 >= nme.getX() &&
     blt.getX() <= nme.getX() + nme.getWidth() &&
     blt.getY() >= nme.getY() &&
