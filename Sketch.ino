@@ -10,6 +10,7 @@
  */
 
 #include <Arduboy2.h>
+#include <ArduboyTones.h>
 #include "player.h"
 #include "bullet.h"
 #include "level.h"
@@ -21,7 +22,8 @@
 #include "credits.h"
 
 Arduboy2 ab;
-Player player(&ab);
+ArduboyTones sound(ab.audio.enabled);
+Player player(&ab, &sound);
 Enemy enemies[17](&player);
 FuelPad fuelPads[5];
 FuelGage fuelGage;
@@ -33,6 +35,65 @@ Credits credits;
 int8_t lives = 3;
 bool refreshScreen = false;
 uint8_t refreshTimer = 120;
+
+const uint16_t alienDeath[] PROGMEM = {
+  5000,  9,
+  1950,  6,
+  6300,  8,
+  2500,  9,
+  4800,  7,
+  1100,  9,
+  5100,  6,
+  1600, 10,
+  3700,  7,
+   790,  9,
+  4000,  8,
+   620,  8,
+  2650,  8,
+   510,  8,
+  2100,  8,
+   420,  8,
+  1600,  8,
+   300,  8,
+   980,  8,
+   230, 12,
+  TONES_END
+};
+
+const uint16_t shipCrash[] PROGMEM = {
+  1320,  4,
+   190,  4,
+   840,  5,
+   280,  5,
+  1100,  4,
+   215,  6,
+   600,  5,
+   340,  7,
+   880,  4,
+   150,  7,
+   560,  6,
+   270,  8,
+   125, 10,
+   480,  7,
+   210, 10,
+   760,  5,
+   170,  9,
+   400,  9,
+   135, 12,
+   350, 11,
+   180, 12,
+   290, 13,
+   110, 15,
+   260, 14,
+   155, 16,
+   225, 16,
+   130, 19,
+   195, 18,
+   105, 22,
+   175, 20,
+    95, 25,
+  TONES_END
+};
 
 // 69x8, 15 frame(s), 1037 bytes
 // Example: Sprites::drawOverwrite(x, y, gameOverMessage2, frame);
@@ -225,6 +286,7 @@ void mainGameLoop() {
       enemies[enemy].die();
       player.getBullet().respawn();
       score.incScore(25);
+      sound.tones(alienDeath);
     }
 
     // If player crashes into enemy
@@ -284,6 +346,7 @@ void mainGameLoop() {
   if (level.getHighAndLow(player.getX(), 8).high >= player.getY() ||
       level.getHighAndLow(player.getX(), 8).low <= player.getY() + 7) {
     if (!player.isDying()) {
+        sound.tones(shipCrash);
         level.setScrolling(false);
         player.die();
         fuelGage.setActive(false);
