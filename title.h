@@ -539,10 +539,10 @@ class Title {
               *state = 1;
               break;
             case(1):
-              *state = 1;
+              *state = 2;
               break;
             case(2):
-              *state = 1;
+              *state = 3;
               break;
             case(3):
               *state = 4;
