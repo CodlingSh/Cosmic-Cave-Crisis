@@ -169,7 +169,19 @@ void loop() {
     case 1: // Gameplay
       mainGameLoop();
       break;
-    case 4:
+    case 2:
+
+      if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
+        gameState = 0;
+      }
+      break;
+    case 3:
+
+      if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
+        gameState = 0;
+      }
+      break;
+    case 4: // Credits
       credits.draw();
 
       if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
