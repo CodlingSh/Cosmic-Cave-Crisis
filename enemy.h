@@ -47,6 +47,13 @@ const uint8_t PROGMEM mover[] = {
   0x98, 0x5c, 0xf6, 0x7f, 0x7f, 0xf6, 0x5c, 0x98,
 };
 
+// 8x8, 1 frame(s), 10 bytes
+// Example: Sprites::drawOverwrite(x, y, tracker, frame);
+const uint8_t PROGMEM tracker[] = {
+  8, 8,
+  0x06, 0xfd, 0x74, 0x2c, 0x2c, 0x74, 0xfd, 0x06,
+};
+
 class Enemy {
   private:
     Player *player;
