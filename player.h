@@ -2,7 +2,25 @@
 #define PLAYER_H
 
 #include <Arduboy2.h>
+#include <ArduboyTones.h>
 #include "bullet.h"
+
+const uint16_t laserShot[] PROGMEM = {
+  4700,  5,
+  4200,  5,
+  3650,  5,
+  3100,  6,
+  2500,  6,
+  2000,  7,
+  1580,  7,
+  1250,  8,
+   990,  9,
+   780,  9,
+   600, 10,
+   440, 12,
+   300, 13,
+  TONES_END
+};
 
 // 8x8, 1 frame(s), 18 bytes
 // Example: Sprites::drawPlusMask(x, y, ship, frame);
@@ -56,6 +74,7 @@ const uint8_t PROGMEM shipExp[] = {
 class Player {
   private:
     Arduboy2 *ab;
+    ArduboyTones *sound;
     uint8_t *spr = ship;
     int16_t x = 10;
     int16_t y = 28;
@@ -71,7 +90,7 @@ class Player {
     uint8_t spawnTimer = 60;
     
   public:
-    Player(Arduboy2 *ab_ptr) : ab(ab_ptr), bullet(ab_ptr) {}
+    Player(Arduboy2 *ab_ptr, ArduboyTones *sound_ptr) : ab(ab_ptr), sound(sound_ptr), bullet(ab_ptr) {}
 
     Bullet& getBullet() {
       return bullet;
@@ -112,9 +131,10 @@ class Player {
 
     void fire() {
       if (!bullet.getActive()) {
-        bullet.setX(x + 5);
+        bullet.setX(x + 8);
         bullet.setY(y + 3);
         bullet.activate();
+        sound->tones(laserShot);
       }
     }
 
