@@ -161,6 +161,7 @@ class Level {
           if (!enemies[j].isActive()) {
             bounds = getHighAndLow(128 + (16 * placements[i]), enemies[j].getWidth());
             enemies[j].spawn(bounds.high, bounds.low, 128 + (16 * placements[i]));
+            enemies[j].setType(TRACKER);
             break;
           }
         }
