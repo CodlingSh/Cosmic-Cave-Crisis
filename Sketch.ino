@@ -7,6 +7,8 @@
  * - Add Options
  * - Add Help
  * - Add sounds
+ * - Fix weird firing behavior
+ * - Make it so fuelpads can't be shot while on them
  */
 
 #include <Arduboy2.h>
