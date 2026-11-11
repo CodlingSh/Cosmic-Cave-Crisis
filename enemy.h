@@ -1,6 +1,11 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
+enum EnemyType : uint8_t {
+    MOVER,
+    TRACKER
+};
+
 // 10x16, 5 frame(s), 202 bytes
 // Example: Sprites::drawPlusMask(x, y, explosion, frame);
 const uint8_t PROGMEM explosion[] = {
@@ -57,6 +62,7 @@ const uint8_t PROGMEM tracker[] = {
 class Enemy {
   private:
     Player *player;
+    EnemyType type = MOVER;
     int16_t x = 200;
     uint8_t y = 100;
     uint8_t width = 8;
@@ -142,6 +148,19 @@ class Enemy {
       moving = false;
     }
 
+    void setType(EnemyType newType) {
+      type = newType;
+
+      switch(newType) {
+        case MOVER:
+          spr = mover;
+          break;
+        case TRACKER:
+          spr = tracker;
+          break;
+      }
+    }
+
     void spawn(uint8_t newH, uint8_t newL, uint8_t newX) {
       x = newX;
       y = random(newH + 5, newL - height - 5);
@@ -161,25 +180,40 @@ class Enemy {
         die();
       }
 
-      if (x <= 55 && !moving && !dying) {
-        if (moving == false) {
-          if (player->getY() > y) {
-            dir = 1;
+      switch(type) {
+        case MOVER:
+          if (x <= 55 && !moving && !dying) {
+            if (moving == false) {
+              if (player->getY() > y) {
+                dir = 1;
+              }
+              moving = true;
+            }
           }
-          moving = true;
-        }
-      }
 
-      if (moving) {
-        if (y <= highest) {
-          dir = 1;
-        } 
-        
-        if (y + height >= lowest) {
-          dir = -1;
-        }
+          if (moving) {
+            if (y <= highest) {
+              dir = 1;
+            } 
 
-        y += dir;
+            if (y + height >= lowest) {
+              dir = -1;
+            }
+
+            y += dir;
+          }
+          break;
+        case TRACKER:
+          if (x <= 100 && x > 75 && !dying) {
+            if (player->getY() > y) {
+              y++;
+            }
+            if (player->getY() < y) {
+              y--;
+            }
+          }
+          break;
+
       }
 
       if (dying) {
