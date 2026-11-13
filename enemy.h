@@ -65,6 +65,7 @@ class Enemy {
     EnemyType type = MOVER;
     int16_t x = 200;
     uint8_t y = 100;
+    uint16_t subY = 400;
     uint8_t width = 8;
     uint8_t height = 8;
     const uint8_t *spr = mover;
@@ -117,6 +118,7 @@ class Enemy {
 
     void setY(uint8_t newY) {
       y = newY;
+      subY = newY * 4;
     }
 
     void setHighest(uint8_t newH) {
@@ -163,7 +165,7 @@ class Enemy {
 
     void spawn(uint8_t newH, uint8_t newL, uint8_t newX) {
       x = newX;
-      y = random(newH + 5, newL - height - 5);
+      setY(random(newH + 5, newL - height - 5));
       highest = newH;
       lowest = newL;
       active = true;
@@ -185,7 +187,7 @@ class Enemy {
           if (x <= 55 && !moving && !dying) {
             if (moving == false) {
               if (player->getY() > y) {
-                dir = 1;
+                dir = 4;
               }
               moving = true;
             }
@@ -193,14 +195,14 @@ class Enemy {
 
           if (moving) {
             if (y <= highest) {
-              dir = 1;
+              dir = 4;
             } 
 
             if (y + height >= lowest) {
-              dir = -1;
+              dir = -4;
             }
 
-            y += dir;
+            subY += dir;
           }
           break;
         case TRACKER:
@@ -213,8 +215,9 @@ class Enemy {
             }
           }
           break;
-
       }
+
+      y = subY / 4;
 
       if (dying) {
         deathTimer++;
