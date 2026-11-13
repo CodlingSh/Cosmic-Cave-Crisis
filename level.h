@@ -161,7 +161,7 @@ class Level {
           if (!enemies[j].isActive()) {
             bounds = getHighAndLow(128 + (16 * placements[i]), enemies[j].getWidth());
             enemies[j].spawn(bounds.high, bounds.low, 128 + (16 * placements[i]));
-            enemies[j].setType(TRACKER);
+            enemies[j].setType(MOVER);
             break;
           }
         }
@@ -397,10 +397,21 @@ class Level {
       }
 
       ab->setCursor(70, 0);
-      // ab->print("E:");
-      // ab->print(activeCount);
-      ab->print("CS:");
-      ab->print(sectsCompleted);
+      ab->print("E:");
+      ab->print(activeCount);
+      //ab->print("CS:");
+      //ab->print(sectsCompleted);
+
+      // ab->setCursor(10, 10);
+      // for (uint8_t i = 0; i < maxEnemies; i++) {
+      //     if (enemies[i].isActive()) {
+      //         ab->print("X:");
+      //         ab->print(enemies[i].getX());
+      //         ab->print(" Y:");
+      //         ab->print(enemies[i].getY());
+      //         break;
+      //     }
+      // }
     }
 };
 
