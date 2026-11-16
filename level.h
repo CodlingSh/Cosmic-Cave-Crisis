@@ -40,8 +40,8 @@ class Level {
     int8_t topHeight = 1;
     int8_t bottomHeight = 1;
     uint8_t mood = 0;
-    uint8_t maxEnemies = 17;
-    uint8_t maxFuelPads = 4;
+    uint8_t maxEnemies = 8;
+    uint8_t maxFuelPads = 2;
 
   public:
     Level(Arduboy2 *abPtr, Enemy *enem, FuelPad *fp) : ab(abPtr), enemies(enem), fuelPads(fp) {
