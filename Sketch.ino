@@ -26,8 +26,8 @@
 Arduboy2 ab;
 ArduboyTones sound(ab.audio.enabled);
 Player player(&ab, &sound);
-Enemy enemies[17](&player);
-FuelPad fuelPads[5];
+Enemy enemies[8](&player);
+FuelPad fuelPads[2];
 FuelGage fuelGage;
 Level level(&ab, enemies, fuelPads);
 Score score;
@@ -282,7 +282,7 @@ void mainGameLoop() {
   player.update();
   fuelGage.update();
 
-  for (uint8_t enemy = 0; enemy < 17; enemy++) {
+  for (uint8_t enemy = 0; enemy < 8; enemy++) {
     // If enemy is hit by bullet
     if (enemyHit(player.getBullet(), enemies[enemy])) {
       enemies[enemy].die();
@@ -305,13 +305,13 @@ void mainGameLoop() {
   }
 
   // This ensures fuelpads stop dropping when not flying over one. Has to happen twice. Do not delete.
-  for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
+  for (uint8_t fuelPad = 0; fuelPad < 2; fuelPad++) {
     if (!playerHit(player, fuelPads[fuelPad]) && !player.isDying()) {
       fuelGage.setActive(true);
     }
   }
 
-  for (uint8_t fuelPad = 0; fuelPad < 5; fuelPad++) {
+  for (uint8_t fuelPad = 0; fuelPad < 2; fuelPad++) {
     // If player flies over a fuelpad 
     if (playerHit(player, fuelPads[fuelPad])) {
       fuelGage.setActive(false);
