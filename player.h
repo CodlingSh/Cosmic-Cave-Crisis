@@ -195,8 +195,6 @@ class Player {
 
       y = subY / 16;
 
-      
-
       // Shooting
       if (ab->pressed(A_BUTTON)) {
         fire();
