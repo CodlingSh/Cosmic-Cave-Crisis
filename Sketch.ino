@@ -2,12 +2,9 @@
  * TODO: 
  * - Add other enemy types
  * - Add difficulty curve
- * - Change the Moon graphic *MAYBE*
- * - Add credits
  * - Add Options
  * - Add Help
  * - Add sounds
- * - Fix weird firing behavior
  * - Make it so fuelpads can't be shot while on them
  */
 
