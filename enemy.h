@@ -65,7 +65,7 @@ class Enemy {
     EnemyType type = MOVER;
     int16_t x = 200;
     uint8_t y = 100;
-    int16_t subY = 800;
+    int16_t subY = 32000; // Every 32 subpixels == 1 pixel
     uint8_t width = 8;
     uint8_t height = 8;
     const uint8_t *spr = mover;
@@ -119,7 +119,7 @@ class Enemy {
 
     void setY(uint8_t newY) {
       y = newY;
-      subY = newY * 8;
+      subY = newY * 32;
     }
 
     void setHighest(uint8_t newH) {
@@ -171,7 +171,7 @@ class Enemy {
       lowest = newL;
       active = true;
       moving = false;
-      speed = 8;
+      speed = 0;
     }
 
     void update() {
@@ -183,40 +183,74 @@ class Enemy {
         die();
       }
 
+      // Set unique enemy behaviors here
       switch(type) {
-        case MOVER:
+        case MOVER: // This enemy just moves up or down when it gets close
           if (x <= 55 && !moving && !dying) {
             dir = player->getY() > y ? 1 : -1;
             moving = true;
           }
 
-          if (moving) {
-            subY += dir * speed;
+          if (moving && speed < 32) {
+            speed += 2;
+          }
+          break;
 
-            if (subY <= highest * 8) {
-                subY = highest * 8;
-                dir = 1;
+        case TRACKER: // This enemy tries to stay aligned on the horizontal axis
+          if (x <= 90 && !dying) {
+
+            if (y > player->getY()) {
+              if (speed < 16) {
+                speed++;
+              }
+              dir = -1;
+            } else if (y + 8 < player->getY() + 8) {
+              if (speed < 16) {
+                speed++;
+              }
+              dir = 1;
+            } else {
+              if (speed > 0) {
+                speed -= 2;
+                if (speed < 0) {
+                  speed = 0;
+                }
+              }
             }
-    
-            if (subY >= (lowest - height) * 8) {
-                subY = (lowest - height) * 8;
-                dir = -1;
-            }
+
+            moving = true;
           }
+
+          // if (y < player->getY() - 2 || y + 10 < player->getY() && moving) {
+          //   if (speed < 16) {
+          //     speed++;
+          //   }
+          // } else {
+          //   if (speed > 0) {
+          //     speed--;
+          //   }
+          // }
+          
           break;
-        case TRACKER:
-          if (x <= 100 && x > 75 && !dying) {
-            if (player->getY() > y) {
-              y++;
-            }
-            if (player->getY() < y) {
-              y--;
-            }
-          }
-          break;
+
       }
 
-      y = subY / 8;
+      // Bounce when hitting wall
+      if (moving) {
+        subY += dir * speed;
+
+        if (subY <= highest * 32) {
+            subY = highest * 32;
+            dir = 1;
+        }
+    
+        if (subY >= (lowest - height) * 32) {
+            subY = (lowest - height) * 32;
+            dir = -1;
+        }
+      }
+
+      y = subY / 32;
 
       if (dying) {
         deathTimer++;
