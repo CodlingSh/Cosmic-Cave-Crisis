@@ -19,6 +19,7 @@
 #include "fuelPad.h"
 #include "title.h"
 #include "credits.h"
+#include "settings.h"
 
 Arduboy2 ab;
 ArduboyTones sound(ab.audio.enabled);
@@ -34,6 +35,8 @@ Credits credits;
 int8_t lives = 3;
 bool refreshScreen = false;
 uint8_t refreshTimer = 120;
+bool soundEnabled = false;
+Settings settings(&ab);
 
 const uint16_t alienDeath[] PROGMEM = {
   5000,  9,
@@ -230,13 +233,14 @@ void loop() {
       mainGameLoop();
       break;
     case 2:
-
       if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
         gameState = 0;
       }
       break;
     case 3:
-
+      settings.update();
+      settings.draw();
+      
       if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
         gameState = 0;
       }
