@@ -4,7 +4,7 @@
 // 58x24, 1 frame(s), 176 bytes
 // Example: Sprites::drawOverwrite(x, y, soundLabel, frame);
 const uint8_t PROGMEM soundLabel[] = {
-  58, 24,
+  // 58, 24,
   0x00, 0x00, 0xf0, 0xf0, 0x0c, 0x0c, 0x0c, 0x0c, 0x30, 0x30, 0x00, 0x00,
   0x00, 0x00, 0xc0, 0xc0, 0xc0, 0xc0, 0x00, 0x00, 0x00, 0x00, 0xc0, 0xc0,
   0x00, 0x00, 0x00, 0x00, 0xc0, 0xc0, 0x00, 0x00, 0xc0, 0xc0, 0xc0, 0xc0,
@@ -25,7 +25,7 @@ const uint8_t PROGMEM soundLabel[] = {
 // 38x24, 1 frame(s), 116 bytes
 // Example: Sprites::drawOverwrite(x, y, ledLabel, frame);
 const uint8_t PROGMEM ledLabel[] = {
-  38, 24,
+  
   0x00, 0x00, 0xfc, 0xfc, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0xf0, 0xf0, 0x0c, 0x0c, 0x0c, 0x0c, 0x0c, 0x0c, 0x00, 0x00, 0xfc, 0xfc,
   0x0c, 0x0c, 0x0c, 0x0c, 0xf0, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -41,7 +41,7 @@ const uint8_t PROGMEM ledLabel[] = {
 // 25x16, 1 frame(s), 52 bytes
 // Example: Sprites::drawOverwrite(x, y, backBtn, frame);
 const uint8_t PROGMEM backBtn[] = {
-  25, 16,
+  
   0x00, 0x00, 0x00, 0xf8, 0x48, 0x48, 0xb0, 0x00, 0x40, 0xa0, 0xa0, 0xc0,
   0x00, 0xc0, 0x20, 0x20, 0x40, 0x00, 0xf8, 0x80, 0x40, 0x20, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x03, 0x02, 0x02, 0x03, 0x00, 0x03, 0x02, 0x02,
@@ -52,7 +52,7 @@ const uint8_t PROGMEM backBtn[] = {
 // 22x24, 1 frame(s), 68 bytes
 // Example: Sprites::drawOverwrite(x, y, onLabel, frame);
 const uint8_t PROGMEM onLabel[] = {
-  22, 24,
+  
   0x00, 0x00, 0xf0, 0xf0, 0x0c, 0x0c, 0x0c, 0x0c, 0xf0, 0xf0, 0x00, 0x00,
   0xfc, 0xfc, 0x30, 0x30, 0xc0, 0xc0, 0xfc, 0xfc, 0x00, 0x00, 0x00, 0x00,
   0x3f, 0x3f, 0xc0, 0xc0, 0xc0, 0xc0, 0x3f, 0x3f, 0x00, 0x00, 0xff, 0xff,
@@ -64,7 +64,7 @@ const uint8_t PROGMEM onLabel[] = {
 // 32x24, 1 frame(s), 98 bytes
 // Example: Sprites::drawOverwrite(x, y, offLabel, frame);
 const uint8_t PROGMEM offLabel[] = {
-  32, 24,
+  
   0x00, 0x00, 0xf0, 0xf0, 0x0c, 0x0c, 0x0c, 0x0c, 0xf0, 0xf0, 0x00, 0x00,
   0xf0, 0xf0, 0x0c, 0x0c, 0x0c, 0x0c, 0x0c, 0x0c, 0x00, 0x00, 0xf0, 0xf0,
   0x0c, 0x0c, 0x0c, 0x0c, 0x0c, 0x0c, 0x00, 0x00, 0x00, 0x00, 0x3f, 0x3f,
@@ -86,20 +86,77 @@ class Settings {
     Settings(Arduboy2 *ab_ptr) : ab(ab_ptr) {}
 
     void update() {
+      if (ab->justPressed(A_BUTTON) || ab->justPressed(B_BUTTON) || ab->justPressed(RIGHT_BUTTON) || ab->justPressed(LEFT_BUTTON) ) {
+        switch(currSelection) {
+          case 0:
+            soundStatus = 1 - soundStatus;
+            break;
+          case 1:
+            ledStatus = 1 - ledStatus;
+            break;
+          case 2:
 
+            break;
+        }
+      }
+
+      if (ab->justPressed(UP_BUTTON)) {
+        if (currSelection > 0) {
+          currSelection--;
+        }
+      }
+
+      if (ab->justPressed(DOWN_BUTTON)) {
+        if (currSelection < 2) {
+          currSelection++;
+        }
+      }
     }
 
     void draw() {
-      // Labels
-      Sprites::drawOverwrite(1, 4, soundLabel, 0);
-      Sprites::drawOverwrite(1, 27, ledLabel, 0);
-      Sprites::drawOverwrite(0, 51, backBtn, 0);
+    // Selection Rectangles on left side
+      switch(currSelection) {
+        case 0: // Sound
+          ab->fillRect(1, 4, 58, 18, WHITE);
+          ab->drawBitmap(1, 4, soundLabel, 58, 18, 0);
+          ab->drawBitmap(1, 27, ledLabel, 38, 18, 1);
+          ab->drawBitmap(0, 51, backBtn, 25, 16, 1);
+          break;
+        case 1: // LED
+          ab->fillRect(1, 27, 38, 18, WHITE);
+          ab->drawBitmap(1, 4, soundLabel, 58, 18, 1);
+          ab->drawBitmap(1, 27, ledLabel, 38, 18, 0);
+          ab->drawBitmap(0, 51, backBtn, 25, 16, 1);
+          break;
+        case 2: // Back
+          ab->fillRect(0, 51, 25, 16, WHITE);
+          ab->drawBitmap(1, 4, soundLabel, 58, 18, 1);
+          ab->drawBitmap(1, 27, ledLabel, 38, 18, 1);
+          ab->drawBitmap(0, 51, backBtn, 25, 16, 0);
+          break;
+      }
 
-      // toggles
-      Sprites::drawOverwrite(65, 4, onLabel, 0);
-      Sprites::drawOverwrite(95, 4, offLabel, 0);
-      Sprites::drawOverwrite(65, 27, onLabel, 0);
-      Sprites::drawOverwrite(95, 27, offLabel, 0);
+      // On Off for sound
+      if (soundStatus == false) {
+        ab->fillRect(95, 4, 32, 18, WHITE);
+        ab->drawBitmap(65, 4, onLabel, 22, 24, 1);
+        ab->drawBitmap(95, 4, offLabel, 32, 24, 0);
+      } else {
+        ab->fillRect(65, 4, 22, 18, WHITE);
+        ab->drawBitmap(65, 4, onLabel, 22, 24, 0);
+        ab->drawBitmap(95, 4, offLabel, 32, 24, 1);
+      }
+
+      // On Off for LED
+      if (ledStatus == false) {
+        ab->fillRect(95, 27, 32, 18, WHITE);
+        ab->drawBitmap(65, 27, onLabel, 22, 24, 1);
+        ab->drawBitmap(95, 27, offLabel, 32, 24, 0);
+      } else {
+        ab->fillRect(65, 27, 22, 18, WHITE);
+        ab->drawBitmap(65, 27, onLabel, 22, 24, 0);
+        ab->drawBitmap(95, 27, offLabel, 32, 24, 1);
+      }
     }
 };
 
