@@ -241,9 +241,9 @@ void loop() {
       settings.update();
       settings.draw();
       
-      if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
-        gameState = 0;
-      }
+      // if (ab.justPressed(A_BUTTON) || ab.justPressed(B_BUTTON)) {
+      //   gameState = 0;
+      // }
       break;
     case 4: // Credits
       credits.draw();
