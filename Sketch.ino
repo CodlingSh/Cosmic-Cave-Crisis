@@ -35,8 +35,8 @@ Credits credits;
 int8_t lives = 3;
 bool refreshScreen = false;
 uint8_t refreshTimer = 120;
-bool soundEnabled = false;
-Settings settings(&ab);
+bool ledEnabled = false;
+Settings settings(&ab, &ledEnabled);
 
 const uint16_t alienDeath[] PROGMEM = {
   5000,  9,
