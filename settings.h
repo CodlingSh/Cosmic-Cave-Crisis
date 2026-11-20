@@ -78,21 +78,21 @@ const uint8_t PROGMEM offLabel[] = {
 class Settings {
   private:
     Arduboy2 *ab;
-    bool soundStatus = false;
-    bool ledStatus = false;
+    bool *ledStatus;
     uint8_t currSelection = 0;
 
   public:
-    Settings(Arduboy2 *ab_ptr) : ab(ab_ptr) {}
+    Settings(Arduboy2 *abPtr, bool *ledPtr) : ab(abPtr), ledStatus(ledPtr) {}
 
     void update() {
       if (ab->justPressed(A_BUTTON) || ab->justPressed(B_BUTTON) || ab->justPressed(RIGHT_BUTTON) || ab->justPressed(LEFT_BUTTON) ) {
         switch(currSelection) {
           case 0:
-            soundStatus = 1 - soundStatus;
+            ab->audio.toggle();
+            ab->audio.saveOnOff();
             break;
           case 1:
-            ledStatus = 1 - ledStatus;
+            *ledStatus = !*ledStatus;
             break;
           case 2:
 
@@ -137,7 +137,7 @@ class Settings {
       }
 
       // On Off for sound
-      if (soundStatus == false) {
+      if (!ab->audio.enabled()) {
         ab->fillRect(95, 4, 32, 18, WHITE);
         ab->drawBitmap(65, 4, onLabel, 22, 24, 1);
         ab->drawBitmap(95, 4, offLabel, 32, 24, 0);
@@ -148,7 +148,7 @@ class Settings {
       }
 
       // On Off for LED
-      if (ledStatus == false) {
+      if (!*ledStatus) {
         ab->fillRect(95, 27, 32, 18, WHITE);
         ab->drawBitmap(65, 27, onLabel, 22, 24, 1);
         ab->drawBitmap(95, 27, offLabel, 32, 24, 0);
