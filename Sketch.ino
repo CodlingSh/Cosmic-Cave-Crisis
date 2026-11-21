@@ -314,6 +314,8 @@ void mainGameLoop() {
 
   for (uint8_t fuelPad = 0; fuelPad < 2; fuelPad++) {
     // If player flies over a fuelpad 
+    bool touching = playerHit(player, fuelPads[fuelPad]);
+
     if (playerHit(player, fuelPads[fuelPad])) {
       fuelGage.setActive(false);
       if (fuelGage.getCoolDown() <= 0) {
@@ -322,11 +324,12 @@ void mainGameLoop() {
       }
       else {
         fuelGage.setCoolDown(fuelGage.getCoolDown() - 1);
+        fuelPads[fuelPad].setPlayerTouch(false);
       }
     }
 
     // If bullet hits fuelpad
-    if (enemyHit(player.getBullet(), fuelPads[fuelPad])) {
+    if (enemyHit(player.getBullet(), fuelPads[fuelPad]) && !touching) {
       fuelPads[fuelPad].destroy();
       player.getBullet().respawn();
       score.incScore(250);
@@ -395,7 +398,7 @@ void mainGameLoop() {
   }
 
   ab.setCursor(10, 0);
-  ab.print(fuelGage.getActive());
+  //ab.print(fuelGage.getActive());
   ab.setCursor(50, 0);
   ab.print(fuelPads[0].getWidth());
   // ab.print(player.getX());
